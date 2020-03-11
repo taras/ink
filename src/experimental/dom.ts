@@ -1,16 +1,35 @@
-import Yoga from 'yoga-layout-prebuilt';
-import measureText from '../measure-text';
-import applyStyle from './apply-style';
+import Yoga from "yoga-layout-prebuilt";
+import measureText from "../measure-text";
+import applyStyle from "./apply-style";
+import { DOMNodeAttribute } from "../dom";
+
+export interface ExperimentalDOMNode {
+	nodeName: string;
+	style: {
+		[key: string]: string;
+	};
+	attributes: {
+		[key: string]: DOMNodeAttribute;
+	};
+	childNodes: ExperimentalDOMNode[];
+	parentNode?: ExperimentalDOMNode;
+	textContent: string | null;
+	yogaNode: Yoga.Node;
+	onRender: () => void;
+	onImmediateRender: () => void;
+}
 
 // Helper utilities implementing some common DOM methods to simplify reconciliation code
-export const createNode = tagName => ({
+export const createNode = (tagName: string): ExperimentalDOMNode => ({
 	nodeName: tagName.toUpperCase(),
 	style: {},
 	attributes: {},
 	childNodes: [],
 	parentNode: null,
 	textContent: null,
-	yogaNode: Yoga.Node.create()
+	yogaNode: Yoga.Node.create(),
+	onRender: () => {},
+	onImmediateRender: () => {}
 });
 
 export const appendChildNode = (node, childNode) => {
@@ -39,7 +58,10 @@ export const insertBeforeNode = (node, newChildNode, beforeChildNode) => {
 	}
 
 	node.childNodes.push(newChildNode);
-	node.yogaNode.insertChild(newChildNode.yogaNode, node.yogaNode.getChildCount());
+	node.yogaNode.insertChild(
+		newChildNode.yogaNode,
+		node.yogaNode.getChildCount()
+	);
 };
 
 export const removeChildNode = (node, removeNode) => {
@@ -63,7 +85,7 @@ export const setAttribute = (node, key, value) => {
 
 export const createTextNode = text => {
 	const node = {
-		nodeName: '#text',
+		nodeName: "#text",
 		nodeValue: text,
 		yogaNode: Yoga.Node.create()
 	};
@@ -74,7 +96,7 @@ export const createTextNode = text => {
 };
 
 export const setTextContent = (node, text) => {
-	if (typeof text !== 'string') {
+	if (typeof text !== "string") {
 		text = String(text);
 	}
 
@@ -87,7 +109,7 @@ export const setTextContent = (node, text) => {
 		height = dimensions.height;
 	}
 
-	if (node.nodeName === '#text') {
+	if (node.nodeName === "#text") {
 		node.nodeValue = text;
 		node.yogaNode.setWidth(width);
 		node.yogaNode.setHeight(height);

@@ -1,13 +1,29 @@
+export interface DOMNode {
+	nodeName: string;
+	style: {
+		[key: string]: string;
+	};
+	attributes: {
+		[key: string]: DOMNodeAttribute;
+	};
+	childNodes: DOMNode[];
+	parentNode?: DOMNode;
+	onRender: () => void;
+}
+
+export type DOMNodeAttribute = boolean | string | number;
+
 // Helper utilities implementing some common DOM methods to simplify reconciliation code
-export const createNode = tagName => ({
+export const createNode = (tagName: string): DOMNode => ({
 	nodeName: tagName.toUpperCase(),
 	style: {},
 	attributes: {},
 	childNodes: [],
-	parentNode: null
+	parentNode: null,
+	onRender: () => {}
 });
 
-export const appendChildNode = (node, childNode) => {
+export const appendChildNode = (node: DOMNode, childNode: DOMNode) => {
 	if (childNode.parentNode) {
 		removeChildNode(childNode.parentNode, childNode);
 	}
@@ -18,11 +34,15 @@ export const appendChildNode = (node, childNode) => {
 };
 
 // Same as `appendChildNode`, but without removing child node from parent node
-export const appendStaticNode = (node, childNode) => {
+export const appendStaticNode = (node: DOMNode, childNode: DOMNode) => {
 	node.childNodes.push(childNode);
 };
 
-export const insertBeforeNode = (node, newChildNode, beforeChildNode) => {
+export const insertBeforeNode = (
+	node: DOMNode,
+	newChildNode: DOMNode,
+	beforeChildNode: DOMNode
+) => {
 	if (newChildNode.parentNode) {
 		removeChildNode(newChildNode.parentNode, newChildNode);
 	}
@@ -38,7 +58,7 @@ export const insertBeforeNode = (node, newChildNode, beforeChildNode) => {
 	node.childNodes.push(newChildNode);
 };
 
-export const removeChildNode = (node, removeNode) => {
+export const removeChildNode = (node: DOMNode, removeNode: DOMNode) => {
 	removeNode.parentNode = null;
 
 	const index = node.childNodes.indexOf(removeNode);
@@ -47,11 +67,15 @@ export const removeChildNode = (node, removeNode) => {
 	}
 };
 
-export const setAttribute = (node, key, value) => {
+export const setAttribute = (
+	node: DOMNode,
+	key: string,
+	value: DOMNodeAttribute
+) => {
 	node.attributes[key] = value;
 };
 
-export const createTextNode = text => ({
-	nodeName: '#text',
+export const createTextNode = (text: string) => ({
+	nodeName: "#text",
 	nodeValue: text
 });
