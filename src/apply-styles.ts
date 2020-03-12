@@ -1,6 +1,21 @@
 import Yoga from 'yoga-layout-prebuilt';
 
-const applyMarginStyles = (node, style) => {
+interface Style {
+	margin?: number
+	marginX?: number
+	marginY?: number
+	marginTop?: number
+	marginBottom?: number
+	marginLeft?: number
+	marginRight?: number
+
+	padding?: number
+	paddingX?: number
+	paddingY?: number
+	paddingTop?: number
+}
+
+const applyMarginStyles = (node: Yoga.Node, style: Style) => {
 	if (style.margin) {
 		node.setMargin(Yoga.EDGE_TOP, style.margin);
 		node.setMargin(Yoga.EDGE_BOTTOM, style.margin);
@@ -35,7 +50,7 @@ const applyMarginStyles = (node, style) => {
 	}
 };
 
-const applyPaddingStyles = (node, style) => {
+const applyPaddingStyles = (node: Yoga.Node, style: Style) => {
 	if (style.padding) {
 		node.setPadding(Yoga.EDGE_TOP, style.padding);
 		node.setPadding(Yoga.EDGE_BOTTOM, style.padding);

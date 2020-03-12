@@ -1,8 +1,9 @@
 import widestLine from 'widest-line';
 import wrapText from './wrap-text';
 import getMaxWidth from './get-max-width';
+import { DOMNode } from './dom';
 
-const isAllTextNodes = node => {
+const isAllTextNodes = (node: DOMNode): boolean => {
 	if (node.nodeName === '#text') {
 		return true;
 	}

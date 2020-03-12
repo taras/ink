@@ -1,9 +1,10 @@
 import Yoga from 'yoga-layout-prebuilt';
 import applyStyles from './apply-styles';
 import measureText from './measure-text';
+import { DOMNode } from './dom';
 
 // Traverse the node tree, create Yoga nodes and assign styles to each Yoga node
-const buildLayout = (node, options) => {
+const buildLayout = (node: DOMNode, options) => {
 	const {config, terminalWidth, skipStaticElements} = options;
 	const yogaNode = Yoga.Node.create(config);
 	node.yogaNode = yogaNode;

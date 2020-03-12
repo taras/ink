@@ -11,6 +11,8 @@ import sliceAnsi from 'slice-ansi';
  */
 
 export default class Output {
+	output: string[];
+
 	constructor({width, height}) {
 		// Initialize output array with a specific set of rows, so that margin/padding at the bottom is preserved
 		const output = [];

@@ -1,3 +1,4 @@
+import Yoga from 'yoga-layout-prebuilt';
 import { ReactNode } from "react";
 export type NodeNames = "root" | "div" | "span" | "#text";
 
@@ -15,6 +16,8 @@ export interface DOMNode {
 	onRender: () => void;
 	unstable__transformChildren?: (x: ReactNode) => ReactNode;
 	unstable__static?: boolean;
+	yogaNode?: Yoga.Node
+	nodeValue?: string;
 }
 
 export type DOMNodeAttribute = boolean | string | number;
