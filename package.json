@@ -22,7 +22,6 @@
 		"pretest": "npm run build",
 		"cast": "svg-term --command='node media/demo.js' --out=media/demo.svg --from=100 --window --width=50 --height=8 --term=iterm2 --profile=Snazzy"
 	},
-	"types": "index.d.ts",
 	"files": [
 		"build",
 		"index.d.ts"
