@@ -1,8 +1,9 @@
+import { ReactNode } from 'react';
 import {
 	unstable_scheduleCallback as schedulePassiveEffects,
 	unstable_cancelCallback as cancelPassiveEffects
 } from 'scheduler';
-import ReactReconciler from 'react-reconciler';
+import ReactReconciler, { HostConfig } from "react-reconciler";
 import {
 	createNode,
 	createTextNode,
@@ -11,12 +12,19 @@ import {
 	removeChildNode,
 	setAttribute,
 	setStyle,
-	setTextContent
+	setTextContent,
+	NodeNames,
+	ExperimentalDOMNode
 } from './dom';
 
 const NO_CONTEXT = true;
 
-const hostConfig = {
+interface Props {
+	children: ReactNode
+}
+
+const hostConfig: HostConfig<NodeNames, Props, ExperimentalDOMNode, any, any, any, any, any, any, any, any, any> = {
+	// @ts-ignore
 	schedulePassiveEffects,
 	cancelPassiveEffects,
 	now: Date.now,
@@ -88,6 +96,7 @@ const hostConfig = {
 		if (node.unstable__static) {
 			rootNode.isStaticDirty = true;
 		}
+		return false;
 	},
 	supportsMutation: true,
 	appendChildToContainer: appendChildNode,

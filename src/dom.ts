@@ -1,3 +1,6 @@
+import { ReactNode } from "react";
+export type NodeNames = "root" | "div" | "span" | "#text";
+
 export interface DOMNode {
 	nodeName: string;
 	style: {
@@ -6,16 +9,19 @@ export interface DOMNode {
 	attributes: {
 		[key: string]: DOMNodeAttribute;
 	};
+	textContent?: string;
 	childNodes: DOMNode[];
 	parentNode?: DOMNode;
 	onRender: () => void;
+	unstable__transformChildren?: (x: ReactNode) => ReactNode;
+	unstable__static?: boolean;
 }
 
 export type DOMNodeAttribute = boolean | string | number;
 
 // Helper utilities implementing some common DOM methods to simplify reconciliation code
-export const createNode = (tagName: string): DOMNode => ({
-	nodeName: tagName.toUpperCase(),
+export const createNode = (nodeName: NodeNames): DOMNode => ({
+	nodeName: nodeName.toUpperCase(),
 	style: {},
 	attributes: {},
 	childNodes: [],

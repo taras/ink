@@ -63,15 +63,18 @@
 		"yoga-layout-prebuilt": "^1.9.3"
 	},
 	"devDependencies": {
+		"@ava/babel": "1.0.1",
 		"@babel/cli": "^7.8.3",
 		"@babel/core": "^7.8.3",
-		"@babel/plugin-proposal-class-properties": "^7.8.3",
-		"@babel/plugin-proposal-object-rest-spread": "^7.8.3",
+		"@babel/plugin-proposal-class-properties": "7.8.3",
+		"@babel/plugin-proposal-object-rest-spread": "7.8.3",
+		"@babel/plugin-transform-modules-commonjs": "7.8.3",
 		"@babel/preset-react": "^7.8.3",
 		"@babel/preset-typescript": "7.8.3",
 		"@types/react": "^16.9.19",
+		"@types/react-reconciler": "0.18.0",
 		"@types/signal-exit": "3.0.0",
-		"ava": "^2.4.0",
+		"ava": "^3.5.0",
 		"babel-eslint": "^10.0.1",
 		"delay": "^4.1.0",
 		"eslint-config-xo-react": "^0.22.0",
@@ -110,6 +113,9 @@
 	},
 	"ava": {
 		"babel": {
+			"compileAsTests": [
+				"test/helpers/*.js"
+			],
 			"testOptions": {
 				"plugins": [
 					"@babel/plugin-proposal-class-properties",
@@ -124,9 +130,6 @@
 		},
 		"files": [
 			"test/*.js"
-		],
-		"helpers": [
-			"test/helpers/*.js"
 		]
 	},
 	"xo": {

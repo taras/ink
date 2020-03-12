@@ -1,16 +1,18 @@
-import React, { ReactNode } from "react";
+import ansiEscapes from "ansi-escapes";
+import isCI from "is-ci";
 import throttle from "lodash.throttle";
 import logUpdate from "log-update";
-import isCI from "is-ci";
+import React, { ReactNode } from "react";
 import signalExit from "signal-exit";
-import ansiEscapes from "ansi-escapes";
-import experimentalReconciler from "./reconciler";
-import { createNode } from "./dom";
-import createExperimentalRenderer from "./renderer";
-import { InkOptions, Ink } from "../ink";
 import App from "../components/App";
+import { Ink, InkOptions } from "../ink";
+import instances from '../instances';
+import { createNode, ExperimentalDOMNode } from "./dom";
+import experimentalReconciler from "./reconciler";
+import createExperimentalRenderer from "./renderer";
 
-export function createExperimentalInk(options: InkOptions): Ink {
+export function createExperimentalInk(options: InkOptions): Ink<ExperimentalDOMNode> {
+	const { waitUntilExit } = options;
 	const rootNode = createNode("root");
 	const log = logUpdate.create(options.stdout);
 	const throttledLog = options.debug
@@ -82,8 +84,8 @@ export function createExperimentalInk(options: InkOptions): Ink {
 
 	rootNode.onImmediateRender = onRender;
 
-	let resolveExitPromise: Ink["resolveExitPromise"];
-	let rejectExitPromise: Ink["rejectExitPromise"];
+	let resolveExitPromise: Ink<ExperimentalDOMNode>["resolveExitPromise"];
+	let rejectExitPromise: Ink<ExperimentalDOMNode>["rejectExitPromise"];
 
 	const container = experimentalReconciler.createContainer(
 		rootNode,
@@ -105,7 +107,10 @@ export function createExperimentalInk(options: InkOptions): Ink {
 			log.done();
 		}
 		instance.isUnmounted = true;
-		experimentalReconciler.updateContainer(null, instance.container);
+		experimentalReconciler.updateContainer(null, instance.container, undefined, undefined);
+
+		instances.delete(options.stdout);
+
 		if (exitCode instanceof Error) {
 			rejectExitPromise(exitCode);
 		} else {
@@ -125,7 +130,7 @@ export function createExperimentalInk(options: InkOptions): Ink {
 			</App>
 		);
 
-		experimentalReconciler.updateContainer(tree, container);
+		experimentalReconciler.updateContainer(tree, container, undefined, undefined);
 	};
 
 	const unsubscribeExit = signalExit(unmount, { alwaysLast: false });
@@ -135,7 +140,7 @@ export function createExperimentalInk(options: InkOptions): Ink {
 		rejectExitPromise = reject;
 	});
 
-	const instance: Ink = {
+	const instance: Ink<ExperimentalDOMNode> = {
 		options,
 		log,
 		isUnmounted: false,
@@ -152,7 +157,7 @@ export function createExperimentalInk(options: InkOptions): Ink {
 		rejectExitPromise,
 		unsubscribeExit,
 		unmount,
-		waitUntilExit: () => exitPromise
+		waitUntilExit
 	};
 
 	return instance;

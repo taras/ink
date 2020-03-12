@@ -1,20 +1,28 @@
+import { ReactNode } from 'react';
 import {
 	unstable_scheduleCallback as schedulePassiveEffects,
 	unstable_cancelCallback as cancelPassiveEffects
-} from 'scheduler';
-import ReactReconciler from 'react-reconciler';
+} from "scheduler";
+import ReactReconciler, { HostConfig } from "react-reconciler";
 import {
 	createNode,
 	createTextNode,
 	appendChildNode,
 	insertBeforeNode,
 	removeChildNode,
-	setAttribute
-} from './dom';
+	setAttribute,
+	NodeNames,
+	DOMNode
+} from "./dom";
 
 const NO_CONTEXT = true;
 
-const hostConfig = {
+interface Props {
+	children: ReactNode
+}
+
+const hostConfig: HostConfig<NodeNames, Props, DOMNode, any, any, any, any, any, any, any, any, any> = {
+	// @ts-ignore
 	schedulePassiveEffects,
 	cancelPassiveEffects,
 	now: Date.now,
@@ -25,30 +33,32 @@ const hostConfig = {
 	},
 	getChildHostContext: () => NO_CONTEXT,
 	shouldSetTextContent: (type, props) => {
-		return typeof props.children === 'string' || typeof props.children === 'number';
+		return (
+			typeof props.children === "string" || typeof props.children === "number"
+		);
 	},
 	createInstance: (type, newProps) => {
 		const node = createNode(type);
 
 		for (const [key, value] of Object.entries(newProps)) {
-			if (key === 'children') {
-				if (typeof value === 'string' || typeof value === 'number') {
-					if (type === 'div') {
+			if (key === "children") {
+				if (typeof value === "string" || typeof value === "number") {
+					if (type === "div") {
 						// Text node must be wrapped in another node, so that text can be aligned within container
-						const textElement = createNode('div');
+						const textElement = createNode("div");
 						textElement.textContent = String(value);
 						appendChildNode(node, textElement);
 					}
 
-					if (type === 'span') {
+					if (type === "span") {
 						node.textContent = String(value);
 					}
 				}
-			} else if (key === 'style') {
+			} else if (key === "style") {
 				node.style = value;
-			} else if (key === 'unstable__transformChildren') {
+			} else if (key === "unstable__transformChildren") {
 				node.unstable__transformChildren = value; // eslint-disable-line camelcase
-			} else if (key === 'unstable__static') {
+			} else if (key === "unstable__static") {
 				node.unstable__static = true; // eslint-disable-line camelcase
 			} else {
 				setAttribute(node, key, value);
@@ -60,7 +70,7 @@ const hostConfig = {
 	createTextInstance: createTextNode,
 	resetTextContent: node => {
 		if (node.textContent) {
-			node.textContent = '';
+			node.textContent = "";
 		}
 
 		if (node.childNodes.length > 0) {
@@ -74,7 +84,7 @@ const hostConfig = {
 	appendInitialChild: appendChildNode,
 	appendChild: appendChildNode,
 	insertBefore: insertBeforeNode,
-	finalizeInitialChildren: () => {},
+	finalizeInitialChildren: () => false,
 	supportsMutation: true,
 	appendChildToContainer: appendChildNode,
 	insertInContainerBefore: insertBeforeNode,
@@ -82,13 +92,13 @@ const hostConfig = {
 	prepareUpdate: () => true,
 	commitUpdate: (node, updatePayload, type, oldProps, newProps) => {
 		for (const [key, value] of Object.entries(newProps)) {
-			if (key === 'children') {
-				if (typeof value === 'string' || typeof value === 'number') {
-					if (type === 'div') {
+			if (key === "children") {
+				if (typeof value === "string" || typeof value === "number") {
+					if (type === "div") {
 						// Text node must be wrapped in another node, so that text can be aligned within container
 						// If there's no such node, a new one must be created
 						if (node.childNodes.length === 0) {
-							const textElement = createNode('div');
+							const textElement = createNode("div");
 							textElement.textContent = String(value);
 							appendChildNode(node, textElement);
 						} else {
@@ -96,15 +106,15 @@ const hostConfig = {
 						}
 					}
 
-					if (type === 'span') {
+					if (type === "span") {
 						node.textContent = String(value);
 					}
 				}
-			} else if (key === 'style') {
+			} else if (key === "style") {
 				node.style = value;
-			} else if (key === 'unstable__transformChildren') {
+			} else if (key === "unstable__transformChildren") {
 				node.unstable__transformChildren = value; // eslint-disable-line camelcase
-			} else if (key === 'unstable__static') {
+			} else if (key === "unstable__static") {
 				node.unstable__static = true; // eslint-disable-line camelcase
 			} else {
 				setAttribute(node, key, value);
@@ -112,7 +122,7 @@ const hostConfig = {
 		}
 	},
 	commitTextUpdate: (node, oldText, newText) => {
-		if (node.nodeName === '#text') {
+		if (node.nodeName === "#text") {
 			node.nodeValue = newText;
 		} else {
 			node.textContent = newText;

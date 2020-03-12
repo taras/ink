@@ -5,7 +5,7 @@ import isCI from "is-ci";
 import reconciler from "./reconciler";
 import createRenderer, { InkRenderer } from "./renderer";
 import signalExit from "signal-exit";
-import {createNode} from "./dom";
+import { createNode } from "./dom";
 import instances from "./instances";
 import App from "./components/App";
 import { WriteStream, ReadStream } from "tty";
@@ -16,9 +16,10 @@ export interface InkOptions {
 	stdin: ReadStream;
 	debug: boolean;
 	exitOnCtrlC: boolean;
+	waitUntilExit: () => Promise<any>;
 }
 
-export interface Ink {
+export interface Ink<Type> {
 	options: InkOptions;
 	log: LogUpdate;
 	throttledLog: LogUpdate;
@@ -26,7 +27,7 @@ export interface Ink {
 	isUnmounted: boolean;
 	lastOutput: string;
 	container: any;
-	rootNode: DOMNode;
+	rootNode: Type;
 	// This variable is used only in debug mode to store full static output
 	// so that it's rerendered every time, not just new static parts, like in non-debug mode
 	fullStaticOutput: string;
@@ -41,7 +42,7 @@ export interface Ink {
 	unsubscribeExit: () => void;
 }
 
-export function createInk(options: InkOptions): Ink {
+export function createInk(options: InkOptions): Ink<DOMNode> {
 	const rootNode = createNode("root");
 	const log = logUpdate.create(options.stdout);
 	const throttledLog = options.debug
@@ -51,8 +52,8 @@ export function createInk(options: InkOptions): Ink {
 				trailing: true
 		  });
 
-	let resolveExitPromise: Ink["resolveExitPromise"];
-	let rejectExitPromise: Ink["rejectExitPromise"];
+	let resolveExitPromise: Ink<DOMNode>["resolveExitPromise"];
+	let rejectExitPromise: Ink<DOMNode>["rejectExitPromise"];
 
 	const renderer = createRenderer({
 		terminalWidth: options.stdout.columns
@@ -123,7 +124,7 @@ export function createInk(options: InkOptions): Ink {
 
 		instance.isUnmounted = true;
 
-		reconciler.updateContainer(null, container);
+		reconciler.updateContainer(null, container, undefined, undefined);
 
 		instances.delete(options.stdout);
 
@@ -133,7 +134,6 @@ export function createInk(options: InkOptions): Ink {
 			resolveExitPromise();
 		}
 	};
-
 
 	const render = (node: ReactNode) => {
 		const tree = (
@@ -147,7 +147,7 @@ export function createInk(options: InkOptions): Ink {
 			</App>
 		);
 
-		reconciler.updateContainer(tree, container);
+		reconciler.updateContainer(tree, container, undefined, undefined);
 	};
 
 	const unsubscribeExit = signalExit(unmount, { alwaysLast: false });
@@ -156,6 +156,8 @@ export function createInk(options: InkOptions): Ink {
 		resolveExitPromise = resolve;
 		rejectExitPromise = reject;
 	});
+
+	const waitUntilExit = () => exitPromise;
 
 	const instance = {
 		options,
@@ -175,7 +177,7 @@ export function createInk(options: InkOptions): Ink {
 		rejectExitPromise,
 		unmount,
 		unsubscribeExit,
-		waitUntilExit: () => exitPromise
+		waitUntilExit: options.waitUntilExit || waitUntilExit
 	};
 
 	return instance;

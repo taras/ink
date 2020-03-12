@@ -1,7 +1,10 @@
+import { ReactNode } from 'react';
 import Yoga from "yoga-layout-prebuilt";
 import measureText from "../measure-text";
 import applyStyle from "./apply-style";
 import { DOMNodeAttribute } from "../dom";
+
+export type NodeNames = 'root' | 'div' | 'span' | '#text';
 
 export interface ExperimentalDOMNode {
 	nodeName: string;
@@ -17,11 +20,14 @@ export interface ExperimentalDOMNode {
 	yogaNode: Yoga.Node;
 	onRender: () => void;
 	onImmediateRender: () => void;
+	unstable__transformChildren?: (x: ReactNode) => ReactNode;
+	unstable__static?: boolean;
+	isStaticDirty?: boolean;
 }
 
 // Helper utilities implementing some common DOM methods to simplify reconciliation code
-export const createNode = (tagName: string): ExperimentalDOMNode => ({
-	nodeName: tagName.toUpperCase(),
+export const createNode = (nodeName: NodeNames): ExperimentalDOMNode => ({
+	nodeName: nodeName.toUpperCase(),
 	style: {},
 	attributes: {},
 	childNodes: [],
@@ -83,7 +89,7 @@ export const setAttribute = (node, key, value) => {
 	node.attributes[key] = value;
 };
 
-export const createTextNode = text => {
+export const createTextNode = (text: string) => {
 	const node = {
 		nodeName: "#text",
 		nodeValue: text,

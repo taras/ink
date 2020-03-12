@@ -3,6 +3,8 @@ import { WriteStream, ReadStream } from "tty";
 import { Ink, createInk, InkOptions } from "./ink";
 import { createExperimentalInk } from "./experimental/createExperimentalInk";
 import instances from "./instances";
+import { ExperimentalDOMNode } from "./experimental/dom";
+import { DOMNode } from "./dom";
 
 export interface RenderOptions {
 	stdout?: WriteStream;
@@ -17,7 +19,24 @@ interface TtyStreams {
 	stdin: NodeJS.ReadStream;
 }
 
-export default (node: ReactNode, options: WriteStream | RenderOptions) => {
+interface InkControls<T> {
+	rerender: Ink<T>["render"];
+	unmount: Ink<T>["unmount"];
+	waitUntilExit: Ink<T>["waitUntilExit"];
+	cleanup: () => void;
+}
+
+type RenderFunction = <T extends WriteStream | RenderOptions = {}>(
+	node: ReactNode,
+	options: T
+) => InkControls<
+	T extends { experimental: true } ? ExperimentalDOMNode : DOMNode
+>;
+
+const render: RenderFunction = (
+	node,
+	options
+): InkControls<DOMNode | ExperimentalDOMNode> => {
 	const defaults = {
 		experimental: false,
 		...options
@@ -28,16 +47,22 @@ export default (node: ReactNode, options: WriteStream | RenderOptions) => {
 		stdin: process.stdin,
 		debug: false,
 		exitOnCtrlC: true,
+		waitUntilExit: () => instance.exitPromise,
 		...(options instanceof WriteStream ? streamToOptions(options) : options)
 	};
 
 	const { stdout } = inkOptions;
 
-	const instance = retrieveCachedInstance(stdout, () =>
-		defaults.experimental
-			? createExperimentalInk(inkOptions)
-			: createInk(inkOptions)
-	);
+	let instance: Ink<DOMNode | ExperimentalDOMNode>;
+	if (defaults.experimental) {
+		instance = retrieveCachedInstance<ExperimentalDOMNode>(stdout, () =>
+			createExperimentalInk(inkOptions)
+		);
+	} else {
+		instance = retrieveCachedInstance<DOMNode>(stdout, () =>
+			createInk(inkOptions)
+		);
+	}
 
 	instance.render(node);
 
@@ -56,11 +81,11 @@ function streamToOptions(stdout: WriteStream): TtyStreams {
 	};
 }
 
-function retrieveCachedInstance(
+function retrieveCachedInstance<T>(
 	stdout: WriteStream,
-	createInstance: () => Ink
+	createInstance: () => Ink<T>
 ) {
-	let instance: Ink;
+	let instance: Ink<T>;
 	if (instances.has(stdout)) {
 		instance = instances.get(stdout);
 	} else {
@@ -69,3 +94,5 @@ function retrieveCachedInstance(
 	}
 	return instance;
 }
+
+export default render;

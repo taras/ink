@@ -49,6 +49,7 @@ test('do not erase screen', async t => {
 
 test('do not erase screen where <Static> is taller than viewport', async t => {
 	const ps = term('erase-with-static', ['4']);
+
 	await ps.waitForExit();
 	t.false(ps.output.includes(ansiEscapes.clearTerminal));
 });
