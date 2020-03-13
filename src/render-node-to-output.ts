@@ -1,14 +1,14 @@
-import widestLine from 'widest-line';
-import wrapText from './wrap-text';
-import getMaxWidth from './get-max-width';
-import { DOMNode } from './dom';
+import widestLine from "widest-line";
+import wrapText from "./wrap-text";
+import getMaxWidth from "./get-max-width";
+import { DOMNode } from "./dom";
 
 const isAllTextNodes = (node: DOMNode): boolean => {
-	if (node.nodeName === '#text') {
+	if (node.nodeName === "#text") {
 		return true;
 	}
 
-	if (node.nodeName === 'SPAN') {
+	if (node.nodeName === "SPAN") {
 		if (node.textContent) {
 			return true;
 		}
@@ -27,9 +27,9 @@ const isAllTextNodes = (node: DOMNode): boolean => {
 //
 // Also, this is necessary for libraries like ink-link (https://github.com/sindresorhus/ink-link),
 // which need to wrap all children at once, instead of wrapping 3 text nodes separately.
-const squashTextNodes = node => {
+const squashTextNodes = (node: DOMNode) => {
 	if (node.childNodes.length === 0) {
-		return '';
+		return "";
 	}
 
 	// If parent container is `<Box>`, text nodes will be treated as separate nodes in
@@ -41,16 +41,16 @@ const squashTextNodes = node => {
 	const offsetX = node.childNodes[0].yogaNode.getComputedLeft();
 	const offsetY = node.childNodes[0].yogaNode.getComputedTop();
 
-	let text = '\n'.repeat(offsetY) + ' '.repeat(offsetX);
+	let text = "\n".repeat(offsetY) + " ".repeat(offsetX);
 
 	for (const childNode of node.childNodes) {
 		let nodeText;
 
-		if (childNode.nodeName === '#text') {
+		if (childNode.nodeName === "#text") {
 			nodeText = childNode.nodeValue;
 		}
 
-		if (childNode.nodeName === 'SPAN') {
+		if (childNode.nodeName === "SPAN") {
 			nodeText = childNode.textContent || squashTextNodes(childNode);
 		}
 
@@ -66,13 +66,36 @@ const squashTextNodes = node => {
 	return text;
 };
 
+interface RenderNodeToOutputOptions {
+	offsetX?: number;
+	offsetY?: number;
+	transformers?: OutputTransformer[];
+	skipStaticElements: boolean;
+}
+
+export interface OutputWriteOptions {
+	transformers: OutputTransformer[];
+}
+
+export type OutputTransformer = (s: string) => string;
+
+export interface OutputWriter {
+	write(x: number, y: number, text: string, options: OutputWriteOptions): void
+}
+
 // After nodes are laid out, render each to output object, which later gets rendered to terminal
-const renderNodeToOutput = (node, output, {offsetX = 0, offsetY = 0, transformers = [], skipStaticElements}) => {
+const renderNodeToOutput = (
+	node: DOMNode,
+	output: OutputWriter,
+	options: RenderNodeToOutputOptions
+) => {
+	const { offsetX = 0, offsetY = 0, transformers = [], skipStaticElements } = options;
+
 	if (node.unstable__static && skipStaticElements) {
 		return;
 	}
 
-	const {yogaNode} = node;
+	const { yogaNode } = node;
 
 	// Left and top positions in Yoga are relative to their parent node
 	const x = offsetX + yogaNode.getComputedLeft();
@@ -102,19 +125,19 @@ const renderNodeToOutput = (node, output, {offsetX = 0, offsetY = 0, transformer
 			}
 		}
 
-		output.write(x, y, text, {transformers: newTransformers});
+		output.write(x, y, text, { transformers: newTransformers });
 		return;
 	}
 
 	// Text nodes
-	if (node.nodeName === '#text') {
-		output.write(x, y, node.nodeValue, {transformers: newTransformers});
+	if (node.nodeName === "#text") {
+		output.write(x, y, node.nodeValue, { transformers: newTransformers });
 		return;
 	}
 
 	// Nodes that have other nodes as children
 	if (Array.isArray(node.childNodes) && node.childNodes.length > 0) {
-		const isFlexDirectionRow = node.style.flexDirection === 'row';
+		const isFlexDirectionRow = node.style.flexDirection === "row";
 
 		if (isFlexDirectionRow && node.childNodes.every(isAllTextNodes)) {
 			let text = squashTextNodes(node);
@@ -130,7 +153,7 @@ const renderNodeToOutput = (node, output, {offsetX = 0, offsetY = 0, transformer
 				}
 			}
 
-			output.write(x, y, text, {transformers: newTransformers});
+			output.write(x, y, text, { transformers: newTransformers });
 			return;
 		}
 

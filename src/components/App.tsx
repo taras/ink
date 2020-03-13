@@ -1,14 +1,23 @@
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
-import cliCursor from 'cli-cursor';
-import AppContext from './AppContext';
-import StdinContext from './StdinContext';
-import StdoutContext from './StdoutContext';
+import React, { PureComponent, ReactNode } from "react";
+import PropTypes from "prop-types";
+import cliCursor from "cli-cursor";
+import AppContext from "./AppContext";
+import StdinContext from "./StdinContext";
+import StdoutContext from "./StdoutContext";
+import { WriteStream, ReadStream } from "tty";
+
+interface AppProps {
+	children: ReactNode;
+	stdin: ReadStream;
+	stdout: WriteStream;
+	exitOnCtrlC: boolean;
+	onExit: (error?: Error) => void;
+}
 
 // Root component for all Ink apps
 // It renders stdin and stdout contexts, so that children can access them if needed
 // It also handles Ctrl+C exiting and cursor visibility
-export default class App extends PureComponent {
+export default class App extends PureComponent<AppProps> {
 	static propTypes = {
 		children: PropTypes.node.isRequired,
 		stdin: PropTypes.object.isRequired,
@@ -17,17 +26,13 @@ export default class App extends PureComponent {
 		onExit: PropTypes.func.isRequired
 	};
 
+	// Count how many components enabled raw mode to avoid disabling
+	// raw mode until all components don't need it anymore
+	rawModeEnabledCount: number = 0;
+
 	// Determines if TTY is supported on the provided stdin
 	isRawModeSupported() {
 		return this.props.stdin.isTTY;
-	}
-
-	constructor() {
-		super();
-
-		// Count how many components enabled raw mode to avoid disabling
-		// raw mode until all components don't need it anymore
-		this.rawModeEnabledCount = 0;
 	}
 
 	render() {
@@ -69,31 +74,31 @@ export default class App extends PureComponent {
 		}
 	}
 
-	componentDidCatch(error) {
+	componentDidCatch(error: Error) {
 		this.handleExit(error);
 	}
 
-	handleSetRawMode = isEnabled => {
-		const {stdin} = this.props;
+	handleSetRawMode = (isEnabled: boolean) => {
+		const { stdin } = this.props;
 
 		if (!this.isRawModeSupported()) {
 			if (stdin === process.stdin) {
 				throw new Error(
-					'Raw mode is not supported on the current process.stdin, which Ink uses as input stream by default.\nRead about how to prevent this error on https://github.com/vadimdemedes/ink/#israwmodesupported'
+					"Raw mode is not supported on the current process.stdin, which Ink uses as input stream by default.\nRead about how to prevent this error on https://github.com/vadimdemedes/ink/#israwmodesupported"
 				);
 			} else {
 				throw new Error(
-					'Raw mode is not supported on the stdin provided to Ink.\nRead about how to prevent this error on https://github.com/vadimdemedes/ink/#israwmodesupported'
+					"Raw mode is not supported on the stdin provided to Ink.\nRead about how to prevent this error on https://github.com/vadimdemedes/ink/#israwmodesupported"
 				);
 			}
 		}
 
-		stdin.setEncoding('utf8');
+		stdin.setEncoding("utf8");
 
 		if (isEnabled) {
 			// Ensure raw mode is enabled only once
 			if (this.rawModeEnabledCount === 0) {
-				stdin.addListener('data', this.handleInput);
+				stdin.addListener("data", this.handleInput);
 				stdin.resume();
 				stdin.setRawMode(true);
 			}
@@ -105,23 +110,24 @@ export default class App extends PureComponent {
 		// Disable raw mode only when no components left that are using it
 		if (--this.rawModeEnabledCount === 0) {
 			stdin.setRawMode(false);
-			stdin.removeListener('data', this.handleInput);
+			stdin.removeListener("data", this.handleInput);
 			stdin.pause();
 		}
 	};
 
-	handleInput = input => {
+	handleInput = (input: string) => {
 		// Exit on Ctrl+C
-		if (input === '\x03' && this.props.exitOnCtrlC) { // eslint-disable-line unicorn/no-hex-escape
+		if (input === "\x03" && this.props.exitOnCtrlC) {
+			// eslint-disable-line unicorn/no-hex-escape
 			this.handleExit();
 		}
 	};
 
-	handleExit = error => {
+	handleExit = (error?: Error) => {
 		if (this.isRawModeSupported()) {
 			this.handleSetRawMode(false);
 		}
 
 		this.props.onExit(error);
-	}
+	};
 }

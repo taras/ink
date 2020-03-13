@@ -47,7 +47,7 @@ export function createInk(options: InkOptions): Ink<DOMNode> {
 	const log = logUpdate.create(options.stdout);
 	const throttledLog = options.debug
 		? log
-		: throttle(log, {
+		: throttle(log, undefined, {
 				leading: true,
 				trailing: true
 		  });

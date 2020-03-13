@@ -1,5 +1,5 @@
 import Yoga from 'yoga-layout-prebuilt';
 
-export default (yogaNode: Yoga.Node) => {
-	return yogaNode.getComputedWidth() - (yogaNode.getComputedPadding() * 2);
+export default (yogaNode: Yoga.YogaNode) => {
+	return yogaNode.getComputedWidth() - (yogaNode.getComputedPadding(Yoga.EDGE_HORIZONTAL) * 2);
 };

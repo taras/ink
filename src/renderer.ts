@@ -1,4 +1,4 @@
-import Yoga from "yoga-layout-prebuilt";
+import Yoga, { YogaNode } from "yoga-layout-prebuilt";
 import Output from "./output";
 import { createNode, appendStaticNode, DOMNode } from "./dom";
 import buildLayout from "./build-layout";
@@ -6,7 +6,7 @@ import renderNodeToOutput from "./render-node-to-output";
 import calculateWrappedText from "./calculate-wrapped-text";
 
 // Since <Static> components can be placed anywhere in the tree, this helper finds and returns them
-const getStaticNodes = element => {
+const getStaticNodes = (element: DOMNode): DOMNode[] => {
 	const staticNodes = [];
 
 	for (const childNode of element.childNodes) {
@@ -33,13 +33,19 @@ export interface InkRendererOutput {
 
 export type InkRenderer = (node: DOMNode) => InkRendererOutput;
 
+type RendererCreator = (options: {
+	terminalWidth: number;
+}) => (
+	node: DOMNode
+) => { output: string; outputHeight: number; staticOutput: string };
+
 // Build layout, apply styles, build text output of all nodes and return it
-export default ({ terminalWidth }) => {
+const createRenderer: RendererCreator = ({ terminalWidth }) => {
 	const config = Yoga.Config.create();
 
 	// Used to free up memory used by last Yoga node tree
-	let lastYogaNode;
-	let lastStaticYogaNode;
+	let lastYogaNode: YogaNode;
+	let lastStaticYogaNode: YogaNode;
 
 	return (node: DOMNode) => {
 		if (lastYogaNode) {
@@ -69,17 +75,9 @@ export default ({ terminalWidth }) => {
 				skipStaticElements: false
 			});
 
-			staticYogaNode.calculateLayout(
-				Yoga.UNDEFINED,
-				Yoga.UNDEFINED,
-				Yoga.DIRECTION_LTR
-			);
+			staticYogaNode.calculateLayout(undefined, undefined, Yoga.DIRECTION_LTR);
 			calculateWrappedText(rootNode);
-			staticYogaNode.calculateLayout(
-				Yoga.UNDEFINED,
-				Yoga.UNDEFINED,
-				Yoga.DIRECTION_LTR
-			);
+			staticYogaNode.calculateLayout(undefined, undefined, Yoga.DIRECTION_LTR);
 
 			// Save current Yoga node tree to free up memory later
 			lastStaticYogaNode = staticYogaNode;
@@ -98,17 +96,9 @@ export default ({ terminalWidth }) => {
 			skipStaticElements: true
 		});
 
-		yogaNode.calculateLayout(
-			Yoga.UNDEFINED,
-			Yoga.UNDEFINED,
-			Yoga.DIRECTION_LTR
-		);
+		yogaNode.calculateLayout(undefined, undefined, Yoga.DIRECTION_LTR);
 		calculateWrappedText(node);
-		yogaNode.calculateLayout(
-			Yoga.UNDEFINED,
-			Yoga.UNDEFINED,
-			Yoga.DIRECTION_LTR
-		);
+		yogaNode.calculateLayout(undefined, undefined, Yoga.DIRECTION_LTR);
 
 		// Save current node tree to free up memory later
 		lastYogaNode = yogaNode;
@@ -127,3 +117,5 @@ export default ({ terminalWidth }) => {
 		};
 	};
 };
+
+export default createRenderer;

@@ -1,11 +1,8 @@
 import wrapAnsi from "wrap-ansi";
 import cliTruncate from "cli-truncate";
+import { WrapTextStyles } from "./styles";
 
-interface WrapTextStyle {
-	textWrap?: string;
-}
-
-export default (text: string, maxWidth: number, style: WrapTextStyle = {}) => {
+export default (text: string, maxWidth: number, style: WrapTextStyles = {}) => {
 	const { textWrap } = style;
 
 	if (textWrap === "wrap") {

@@ -1,21 +1,7 @@
-import Yoga from 'yoga-layout-prebuilt';
+import Yoga from "yoga-layout-prebuilt";
+import { Styles, FlexStyles, PaddingStyles, DimensionStyles } from "./styles";
 
-interface Style {
-	margin?: number
-	marginX?: number
-	marginY?: number
-	marginTop?: number
-	marginBottom?: number
-	marginLeft?: number
-	marginRight?: number
-
-	padding?: number
-	paddingX?: number
-	paddingY?: number
-	paddingTop?: number
-}
-
-const applyMarginStyles = (node: Yoga.Node, style: Style) => {
+const applyMarginStyles = (node: Yoga.YogaNode, style: Styles) => {
 	if (style.margin) {
 		node.setMargin(Yoga.EDGE_TOP, style.margin);
 		node.setMargin(Yoga.EDGE_BOTTOM, style.margin);
@@ -50,7 +36,10 @@ const applyMarginStyles = (node: Yoga.Node, style: Style) => {
 	}
 };
 
-const applyPaddingStyles = (node: Yoga.Node, style: Style) => {
+const applyPaddingStyles = (
+	node: Yoga.YogaNode,
+	style: FlexStyles & PaddingStyles
+) => {
 	if (style.padding) {
 		node.setPadding(Yoga.EDGE_TOP, style.padding);
 		node.setPadding(Yoga.EDGE_BOTTOM, style.padding);
@@ -85,7 +74,7 @@ const applyPaddingStyles = (node: Yoga.Node, style: Style) => {
 	}
 };
 
-const applyFlexStyles = (node, style) => {
+const applyFlexStyles = (node: Yoga.YogaNode, style: FlexStyles) => {
 	if (style.flexGrow) {
 		node.setFlexGrow(style.flexGrow);
 	}
@@ -95,19 +84,19 @@ const applyFlexStyles = (node, style) => {
 	}
 
 	if (style.flexDirection) {
-		if (style.flexDirection === 'row') {
+		if (style.flexDirection === "row") {
 			node.setFlexDirection(Yoga.FLEX_DIRECTION_ROW);
 		}
 
-		if (style.flexDirection === 'row-reverse') {
+		if (style.flexDirection === "row-reverse") {
 			node.setFlexDirection(Yoga.FLEX_DIRECTION_ROW_REVERSE);
 		}
 
-		if (style.flexDirection === 'column') {
+		if (style.flexDirection === "column") {
 			node.setFlexDirection(Yoga.FLEX_DIRECTION_COLUMN);
 		}
 
-		if (style.flexDirection === 'column-reverse') {
+		if (style.flexDirection === "column-reverse") {
 			node.setFlexDirection(Yoga.FLEX_DIRECTION_COLUMN_REVERSE);
 		}
 	}
@@ -117,43 +106,43 @@ const applyFlexStyles = (node, style) => {
 	}
 
 	if (style.alignItems) {
-		if (style.alignItems === 'flex-start') {
+		if (style.alignItems === "flex-start") {
 			node.setAlignItems(Yoga.ALIGN_FLEX_START);
 		}
 
-		if (style.alignItems === 'center') {
+		if (style.alignItems === "center") {
 			node.setAlignItems(Yoga.ALIGN_CENTER);
 		}
 
-		if (style.alignItems === 'flex-end') {
+		if (style.alignItems === "flex-end") {
 			node.setAlignItems(Yoga.ALIGN_FLEX_END);
 		}
 	}
 
 	if (style.justifyContent) {
-		if (style.justifyContent === 'flex-start') {
+		if (style.justifyContent === "flex-start") {
 			node.setJustifyContent(Yoga.JUSTIFY_FLEX_START);
 		}
 
-		if (style.justifyContent === 'center') {
+		if (style.justifyContent === "center") {
 			node.setJustifyContent(Yoga.JUSTIFY_CENTER);
 		}
 
-		if (style.justifyContent === 'flex-end') {
+		if (style.justifyContent === "flex-end") {
 			node.setJustifyContent(Yoga.JUSTIFY_FLEX_END);
 		}
 
-		if (style.justifyContent === 'space-between') {
+		if (style.justifyContent === "space-between") {
 			node.setJustifyContent(Yoga.JUSTIFY_SPACE_BETWEEN);
 		}
 
-		if (style.justifyContent === 'space-around') {
+		if (style.justifyContent === "space-around") {
 			node.setJustifyContent(Yoga.JUSTIFY_SPACE_AROUND);
 		}
 	}
 };
 
-const applyDimensionStyles = (node, style) => {
+const applyDimensionStyles = (node: Yoga.YogaNode, style: DimensionStyles) => {
 	if (style.width !== undefined) {
 		node.setWidth(style.width);
 	}
@@ -171,7 +160,7 @@ const applyDimensionStyles = (node, style) => {
 	}
 };
 
-export default (node, style = {}) => {
+export default (node: Yoga.YogaNode, style: Styles = {}) => {
 	applyMarginStyles(node, style);
 	applyPaddingStyles(node, style);
 	applyFlexStyles(node, style);

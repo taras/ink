@@ -1,5 +1,6 @@
 import sliceAnsi from "slice-ansi";
 import stringLength from "string-length";
+import { OutputWriter, OutputWriteOptions, OutputTransformer } from "../render-node-to-output";
 
 /**
  * "Virtual" output class
@@ -10,26 +11,35 @@ import stringLength from "string-length";
  * Used to generate the final output of all nodes before writing it to actual output stream (e.g. stdout)
  */
 
+interface OutputConstructorOptions {
+	width: number;
+	height: number;
+}
+
 interface Writes {
 	x: number;
 	y: number;
 	text: string;
-	transformers: ((s: string) => string)[];
+	transformers: OutputTransformer[];
 }
 
-export default class Output {
+export default class Output implements OutputWriter {
 	width: number;
 	height: number;
-	writes: Writes[];
 
-	constructor({ width, height }) {
+	// Initialize output array with a specific set of rows, so that margin/padding at the bottom is preserved
+	writes: Writes[] = [];
+
+	constructor(options: OutputConstructorOptions) {
+		const { width, height } = options;
+
 		this.width = width;
 		this.height = height;
-		this.writes = [];
-		// Initialize output array with a specific set of rows, so that margin/padding at the bottom is preserved
 	}
 
-	write(x: number, y: number, text: string, { transformers }) {
+	write(x: number, y: number, text: string, options: OutputWriteOptions) {
+		const { transformers } = options;
+
 		if (!text) {
 			return;
 		}
@@ -38,7 +48,7 @@ export default class Output {
 	}
 
 	get() {
-		const output = [];
+		const output: string[] = [];
 
 		for (let y = 0; y < this.height; y++) {
 			output.push(" ".repeat(this.width));

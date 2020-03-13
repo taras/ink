@@ -1,33 +1,42 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 import Yoga from "yoga-layout-prebuilt";
 import measureText from "../measure-text";
 import applyStyle from "./apply-style";
 import { DOMNodeAttribute } from "../dom";
+import { Styles } from "../styles";
+import { OutputTransformer } from "../render-node-to-output";
 
-export type NodeNames = 'root' | 'div' | 'span' | '#text';
+export type NodeNames = "root" | "div" | "span";
 
 export interface ExperimentalDOMNode {
-	nodeName: string;
-	style: {
-		[key: string]: string;
-	};
+	nodeName: NodeNames;
+	style: Styles;
 	attributes: {
 		[key: string]: DOMNodeAttribute;
 	};
 	childNodes: ExperimentalDOMNode[];
 	parentNode?: ExperimentalDOMNode;
 	textContent: string | null;
-	yogaNode: Yoga.Node;
+	nodeValue?: string | null;
+	yogaNode: Yoga.YogaNode;
 	onRender: () => void;
 	onImmediateRender: () => void;
-	unstable__transformChildren?: (x: ReactNode) => ReactNode;
+	unstable__transformChildren?: OutputTransformer;
 	unstable__static?: boolean;
 	isStaticDirty?: boolean;
 }
 
+export type NodeTextTypes = ExperimentalDOMNode | ExperimentalTextNode;
+
+export interface ExperimentalTextNode {
+	nodeName: "#text";
+	nodeValue: string | null;
+	yogaNode: Yoga.YogaNode;
+}
+
 // Helper utilities implementing some common DOM methods to simplify reconciliation code
 export const createNode = (nodeName: NodeNames): ExperimentalDOMNode => ({
-	nodeName: nodeName.toUpperCase(),
+	nodeName: nodeName.toUpperCase() as NodeNames,
 	style: {},
 	attributes: {},
 	childNodes: [],
@@ -38,7 +47,10 @@ export const createNode = (nodeName: NodeNames): ExperimentalDOMNode => ({
 	onImmediateRender: () => {}
 });
 
-export const appendChildNode = (node, childNode) => {
+export const appendChildNode = (
+	node: ExperimentalDOMNode,
+	childNode: ExperimentalDOMNode
+) => {
 	if (childNode.parentNode) {
 		removeChildNode(childNode.parentNode, childNode);
 	}
@@ -49,7 +61,11 @@ export const appendChildNode = (node, childNode) => {
 	node.yogaNode.insertChild(childNode.yogaNode, node.yogaNode.getChildCount());
 };
 
-export const insertBeforeNode = (node, newChildNode, beforeChildNode) => {
+export const insertBeforeNode = (
+	node: ExperimentalDOMNode,
+	newChildNode: ExperimentalDOMNode,
+	beforeChildNode: ExperimentalDOMNode
+) => {
 	if (newChildNode.parentNode) {
 		removeChildNode(newChildNode.parentNode, newChildNode);
 	}
@@ -70,7 +86,10 @@ export const insertBeforeNode = (node, newChildNode, beforeChildNode) => {
 	);
 };
 
-export const removeChildNode = (node, removeNode) => {
+export const removeChildNode = (
+	node: ExperimentalDOMNode,
+	removeNode: ExperimentalDOMNode
+) => {
 	removeNode.parentNode.yogaNode.removeChild(removeNode.yogaNode);
 	removeNode.parentNode = null;
 
@@ -80,17 +99,21 @@ export const removeChildNode = (node, removeNode) => {
 	}
 };
 
-export const setStyle = (node, style) => {
+export const setStyle = (node: ExperimentalDOMNode, style: Styles) => {
 	node.style = style;
 	applyStyle(node.yogaNode, style);
 };
 
-export const setAttribute = (node, key, value) => {
+export const setAttribute = (
+	node: ExperimentalDOMNode,
+	key: string,
+	value: string
+) => {
 	node.attributes[key] = value;
 };
 
-export const createTextNode = (text: string) => {
-	const node = {
+export const createTextNode = (text: string): ExperimentalTextNode => {
+	const node: ExperimentalTextNode = {
 		nodeName: "#text",
 		nodeValue: text,
 		yogaNode: Yoga.Node.create()
@@ -101,7 +124,7 @@ export const createTextNode = (text: string) => {
 	return node;
 };
 
-export const setTextContent = (node, text) => {
+export const setTextContent = (node: NodeTextTypes, text: string) => {
 	if (typeof text !== "string") {
 		text = String(text);
 	}

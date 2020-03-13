@@ -1,10 +1,25 @@
 /* eslint-disable camelcase */
-import React from 'react';
-import PropTypes from 'prop-types';
-import chalk from 'chalk';
+import React, { FC, ReactNode } from "react";
+import PropTypes from "prop-types";
+import chalk from "chalk";
 
-const Text = ({bold, italic, underline, strikethrough, children, unstable__transformChildren}) => {
-	const transformChildren = children => {
+interface TextProps {
+	readonly bold?: boolean;
+	readonly italic?: boolean;
+	readonly underline?: boolean;
+	readonly strikethrough?: boolean;
+	readonly unstable__transformChildren?: (x: string) => string
+}
+
+const Text: FC<TextProps & { children: ReactNode }> = ({
+	bold,
+	italic,
+	underline,
+	strikethrough,
+	children,
+	unstable__transformChildren
+}) => {
+	const transformChildren = (children: string) => {
 		if (bold) {
 			children = chalk.bold(children);
 		}
@@ -28,7 +43,15 @@ const Text = ({bold, italic, underline, strikethrough, children, unstable__trans
 		return children;
 	};
 
-	return <span style={{flexDirection: 'row'}} unstable__transformChildren={transformChildren}>{children}</span>;
+	return (
+		<span
+			style={{ flexDirection: "row" }}
+			// @ts-ignore
+			unstable__transformChildren={transformChildren}
+		>
+			{children}
+		</span>
+	);
 };
 
 /* eslint-disable react/boolean-prop-naming */

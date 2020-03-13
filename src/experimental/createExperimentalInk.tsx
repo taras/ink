@@ -17,7 +17,7 @@ export function createExperimentalInk(options: InkOptions): Ink<ExperimentalDOMN
 	const log = logUpdate.create(options.stdout);
 	const throttledLog = options.debug
 		? log
-		: throttle(log, {
+		: throttle(log, undefined, {
 				leading: true,
 				trailing: true
 		  });

@@ -1,12 +1,12 @@
 import Yoga from 'yoga-layout-prebuilt';
 import { ReactNode } from "react";
-export type NodeNames = "root" | "div" | "span" | "#text";
+import { Styles } from './styles';
+import { OutputTransformer } from './render-node-to-output';
+export type NodeNames = "root" | "div" | "span" ;
 
 export interface DOMNode {
 	nodeName: string;
-	style: {
-		[key: string]: string;
-	};
+	style: Styles;
 	attributes: {
 		[key: string]: DOMNodeAttribute;
 	};
@@ -14,9 +14,9 @@ export interface DOMNode {
 	childNodes: DOMNode[];
 	parentNode?: DOMNode;
 	onRender: () => void;
-	unstable__transformChildren?: (x: ReactNode) => ReactNode;
+	unstable__transformChildren?: OutputTransformer
 	unstable__static?: boolean;
-	yogaNode?: Yoga.Node
+	yogaNode?: Yoga.YogaNode
 	nodeValue?: string;
 }
 

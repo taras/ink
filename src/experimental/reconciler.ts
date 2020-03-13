@@ -55,12 +55,12 @@ const hostConfig: HostConfig<NodeNames, Props, ExperimentalDOMNode, any, any, an
 					if (type === 'div') {
 						// Text node must be wrapped in another node, so that text can be aligned within container
 						const textNode = createNode('div');
-						setTextContent(textNode, value);
+						setTextContent(textNode, String(value));
 						appendChildNode(node, textNode);
 					}
 
 					if (type === 'span') {
-						setTextContent(node, value);
+						setTextContent(node, String(value));
 					}
 				}
 			} else if (key === 'style') {
@@ -118,15 +118,15 @@ const hostConfig: HostConfig<NodeNames, Props, ExperimentalDOMNode, any, any, an
 						// If there's no such node, a new one must be created
 						if (node.childNodes.length === 0) {
 							const textNode = createNode('div');
-							setTextContent(textNode, value);
+							setTextContent(textNode, String(value));
 							appendChildNode(node, textNode);
 						} else {
-							setTextContent(node.childNodes[0], value);
+							setTextContent(node.childNodes[0], String(value));
 						}
 					}
 
 					if (type === 'span') {
-						setTextContent(node, value);
+						setTextContent(node, String(value));
 					}
 				}
 			} else if (key === 'style') {
