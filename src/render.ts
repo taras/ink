@@ -47,7 +47,6 @@ const render: RenderFunction = (
 		stdin: process.stdin,
 		debug: false,
 		exitOnCtrlC: true,
-		waitUntilExit: () => instance.exitPromise,
 		...(options instanceof WriteStream ? streamToOptions(options) : options)
 	};
 

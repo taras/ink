@@ -16,7 +16,7 @@ export interface InkOptions {
 	stdin: ReadStream;
 	debug: boolean;
 	exitOnCtrlC: boolean;
-	waitUntilExit: () => Promise<any>;
+	waitUntilExit?: () => Promise<any>;
 }
 
 export interface Ink<Type> {
@@ -177,7 +177,7 @@ export function createInk(options: InkOptions): Ink<DOMNode> {
 		rejectExitPromise,
 		unmount,
 		unsubscribeExit,
-		waitUntilExit: options.waitUntilExit || waitUntilExit
+		waitUntilExit: options.waitUntilExit ?? waitUntilExit
 	};
 
 	return instance;

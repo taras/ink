@@ -1,9 +1,9 @@
 import { serial as test } from "ava";
 import { spawn } from "node-pty";
 
-const term = (fixture, args = []) => {
-	let resolve;
-	let reject;
+const term = (fixture: string, args = []) => {
+	let resolve: (value?: any) => void;
+	let reject: (error?: Error) => void;
 
 	// eslint-disable-next-line promise/param-names
 	const exitPromise = new Promise((resolve2, reject2) => {
@@ -11,7 +11,7 @@ const term = (fixture, args = []) => {
 		reject = reject2;
 	});
 
-	const ps = spawn("ts-node", ["./fixtures/run", `./${fixture}`, ...args], {
+	const ps = spawn("ts-node", [`./fixtures/${fixture}.tsx`, ...args], {
 		name: "xterm-color",
 		cols: 100,
 		cwd: __dirname,
