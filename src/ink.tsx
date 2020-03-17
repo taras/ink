@@ -177,7 +177,7 @@ export function createInk(options: InkOptions): Ink<DOMNode> {
 		rejectExitPromise,
 		unmount,
 		unsubscribeExit,
-		waitUntilExit: options.waitUntilExit ?? waitUntilExit
+		waitUntilExit: options.waitUntilExit || waitUntilExit
 	};
 
 	return instance;

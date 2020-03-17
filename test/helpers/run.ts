@@ -1,9 +1,12 @@
-import {spawn} from 'node-pty';
+import { spawn } from "node-pty";
 
-export default (fixture, {env} = {}) => {
+const run: (fixture: string, props?: { env?: {} }) => Promise<any> = (
+	fixture,
+	{ env } = {}
+) => {
 	return new Promise((resolve, reject) => {
-		const term = spawn('ts-node', [`${__dirname}/../fixtures/run`, `./${fixture}`], {
-			name: 'xterm-color',
+		const term = spawn("ts-node", [`${__dirname}/../fixtures/${fixture}.tsx`], {
+			name: "xterm-color",
 			cols: 100,
 			cwd: __dirname,
 			env: {
@@ -12,13 +15,13 @@ export default (fixture, {env} = {}) => {
 			}
 		});
 
-		let output = '';
+		let output = "";
 
-		term.on('data', data => {
+		term.on("data", data => {
 			output += data;
 		});
 
-		term.on('exit', code => {
+		term.on("exit", code => {
 			if (code === 0) {
 				resolve(output);
 				return;
@@ -28,3 +31,5 @@ export default (fixture, {env} = {}) => {
 		});
 	});
 };
+
+export default run;
