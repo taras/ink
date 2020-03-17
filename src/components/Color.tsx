@@ -18,6 +18,51 @@ const methods = [
 	"bgKeyword"
 ];
 
+const Color: FC<ColorProps & { children: ReactNode }> = ({ children, ...colorProps }) => {
+	if (children === "") {
+		return null;
+	}
+
+	// TODO: Figure out what's going on here and write the type definition
+	const transformChildren = (children: ReactNode) => {
+		Object.keys(colorProps).forEach(method => {
+			// @ts-ignore
+			if (colorProps[method]) {
+				if (methods.includes(method)) {
+					// @ts-ignore
+					children = chalk[method](...arrify(colorProps[method]))(children);
+					// @ts-ignore
+				} else if (typeof chalk[method] === "function") {
+					// @ts-ignore
+					children = chalk[method](children);
+				}
+			}
+		});
+
+		return children;
+	};
+
+	return (
+		<span
+			style={{ flexDirection: "row" }}
+			// @ts-ignore
+			unstable__transformChildren={transformChildren}
+		>
+			{children}
+		</span>
+	);
+};
+
+Color.propTypes = {
+	children: PropTypes.node
+};
+
+Color.defaultProps = {
+	children: ""
+};
+
+export default Color;
+
 interface ColorProps {
 	readonly hex?: string;
 	readonly hsl?: [number, number, number];
@@ -79,48 +124,3 @@ interface ColorProps {
 	readonly bgCyanBright?: boolean;
 	readonly bgWhiteBright?: boolean;
 }
-
-const Color: FC<ColorProps & { children: ReactNode }> = ({ children, ...colorProps }) => {
-	if (children === "") {
-		return null;
-	}
-
-	// TODO: Figure out what's going on here and write the type definition
-	const transformChildren = (children: ReactNode) => {
-		Object.keys(colorProps).forEach(method => {
-			// @ts-ignore
-			if (colorProps[method]) {
-				if (methods.includes(method)) {
-					// @ts-ignore
-					children = chalk[method](...arrify(colorProps[method]))(children);
-					// @ts-ignore
-				} else if (typeof chalk[method] === "function") {
-					// @ts-ignore
-					children = chalk[method](children);
-				}
-			}
-		});
-
-		return children;
-	};
-
-	return (
-		<span
-			style={{ flexDirection: "row" }}
-			// @ts-ignore
-			unstable__transformChildren={transformChildren}
-		>
-			{children}
-		</span>
-	);
-};
-
-Color.propTypes = {
-	children: PropTypes.node
-};
-
-Color.defaultProps = {
-	children: ""
-};
-
-export default Color;

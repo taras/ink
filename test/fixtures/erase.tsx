@@ -10,5 +10,5 @@ const Erase = () => (
 	</Box>
 );
 
-process.stdout.rows = Number(process.argv[3]);
+process.stdout.rows = Number(process.argv[2]);
 render(<Erase/>, {experimental: true});

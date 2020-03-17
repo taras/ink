@@ -1,10 +1,15 @@
 import React from "react";
 import { render, Static, Box } from "../..";
 
-class Test extends React.Component<{}, { counter: number; items: string[] }> {
+interface TestState {
+	counter: number;
+	items: string[];
+}
+
+class Test extends React.Component<{}, TestState> {
 	timer: NodeJS.Timeout;
 
-	state = {
+	state: TestState = {
 		items: [],
 		counter: 0
 	};
