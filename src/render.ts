@@ -1,22 +1,17 @@
 import { ReactNode } from "react";
-import { WriteStream, ReadStream } from "tty";
 import { Ink, createInk, InkOptions } from "./ink";
 import { createExperimentalInk } from "./experimental/createExperimentalInk";
 import instances from "./instances";
 import { ExperimentalDOMNode } from "./experimental/dom";
 import { DOMNode } from "./dom";
+import { Stream } from 'stream';
 
 export interface RenderOptions {
-	stdout?: WriteStream;
-	stdin?: ReadStream;
+	stdout?: NodeJS.WriteStream;
+	stdin?: NodeJS.ReadStream;
 	debug?: boolean;
 	exitOnCtrlC?: boolean;
 	experimental?: boolean;
-}
-
-interface TtyStreams {
-	stdout: WriteStream;
-	stdin: NodeJS.ReadStream;
 }
 
 interface InkControls<T> {
@@ -26,7 +21,7 @@ interface InkControls<T> {
 	cleanup?: () => void;
 }
 
-type RenderFunction = <T extends WriteStream | RenderOptions = {}>(
+type RenderFunction = <T extends NodeJS.WriteStream | RenderOptions = {}>(
 	node: ReactNode,
 	options?: T
 ) => InkControls<
@@ -47,7 +42,7 @@ const render: RenderFunction = (
 		stdin: process.stdin,
 		debug: false,
 		exitOnCtrlC: true,
-		...(options instanceof WriteStream ? streamToOptions(options) : options)
+		...streamToOptions(options)
 	};
 
 	const { stdout } = inkOptions;
@@ -73,15 +68,19 @@ const render: RenderFunction = (
 	};
 };
 
-function streamToOptions(stdout: WriteStream): TtyStreams {
-	return {
-		stdout,
-		stdin: process.stdin
-	};
+function streamToOptions(stdout: NodeJS.WriteStream | RenderOptions): RenderOptions {
+	if (stdout instanceof Stream) {
+		return {
+			stdout,
+			stdin: process.stdin
+		};
+	} else {
+		return stdout;
+	}
 }
 
 function retrieveCachedInstance<T>(
-	stdout: WriteStream,
+	stdout: NodeJS.WriteStream,
 	createInstance: () => Ink<T>
 ) {
 	let instance: Ink<T>;

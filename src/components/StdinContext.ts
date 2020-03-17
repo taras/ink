@@ -1,8 +1,7 @@
 import { createContext } from "react";
-import { ReadStream } from "tty";
 
 export interface StdinContext {
-	stdin: ReadStream;
+	stdin: NodeJS.ReadStream;
 	setRawMode: (value: boolean) => void;
 	isRawModeSupported: boolean;
 }

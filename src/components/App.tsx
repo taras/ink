@@ -4,12 +4,10 @@ import cliCursor from "cli-cursor";
 import AppContext from "./AppContext";
 import StdinContext from "./StdinContext";
 import StdoutContext from "./StdoutContext";
-import { WriteStream, ReadStream } from "tty";
-
 interface AppProps {
 	children: ReactNode;
-	stdin: ReadStream;
-	stdout: WriteStream;
+	stdin: NodeJS.ReadStream;
+	stdout: NodeJS.WriteStream;
 	exitOnCtrlC: boolean;
 	onExit: (error?: Error) => void;
 }

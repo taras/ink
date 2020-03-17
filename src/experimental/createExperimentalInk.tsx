@@ -12,7 +12,6 @@ import experimentalReconciler from "./reconciler";
 import createExperimentalRenderer from "./renderer";
 
 export function createExperimentalInk(options: InkOptions): Ink<ExperimentalDOMNode> {
-	const { waitUntilExit } = options;
 	const rootNode = createNode("root");
 	const log = logUpdate.create(options.stdout);
 	const throttledLog = options.debug
@@ -140,6 +139,8 @@ export function createExperimentalInk(options: InkOptions): Ink<ExperimentalDOMN
 		rejectExitPromise = reject;
 	});
 
+	const waitUntilExit = () => exitPromise;
+
 	const instance: Ink<ExperimentalDOMNode> = {
 		options,
 		log,
@@ -157,7 +158,7 @@ export function createExperimentalInk(options: InkOptions): Ink<ExperimentalDOMN
 		rejectExitPromise,
 		unsubscribeExit,
 		unmount,
-		waitUntilExit
+		waitUntilExit: options.waitUntilExit || waitUntilExit
 	};
 
 	return instance;

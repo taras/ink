@@ -72,6 +72,7 @@
 		"@babel/preset-typescript": "7.8.3",
 		"@types/is-ci": "2.0.0",
 		"@types/lodash.throttle": "4.1.6",
+		"@types/node": "13.9.1",
 		"@types/react": "^16.9.19",
 		"@types/react-reconciler": "0.18.0",
 		"@types/scheduler": "0.16.1",
@@ -126,7 +127,8 @@
 	},
 	"ava": {
 		"extensions": [
-			"ts", "tsx"
+			"ts",
+			"tsx"
 		],
 		"require": [
 			"ts-node/register/transpile-only"

@@ -1,13 +1,17 @@
-import {render} from '../../build';
+import { render } from "../../build";
+import { DOMNode } from "../../build/dom";
+import { ExperimentalDOMNode } from "../../build/experimental/dom";
 
 // Fake process.stdout
 class Stream {
-	constructor({columns}) {
-		this.output = '';
+	output: string = "";
+	columns: number;
+
+	constructor({ columns }) {
 		this.columns = columns || 100;
 	}
 
-	write(str) {
+	write(str: string) {
 		this.output = str;
 	}
 
@@ -16,14 +20,20 @@ class Stream {
 	}
 }
 
-export default (node, {columns} = {}) => {
-	const stream = new Stream({columns});
+const renderToString: (
+	node: DOMNode | ExperimentalDOMNode,
+	options: { columns?: number }
+) => string = (node, { columns } = {}) => {
+	const stream = new Stream({ columns });
 
 	render(node, {
+		// @ts-ignore
 		stdout: stream,
 		debug: true,
-		experimental: process.env.EXPERIMENTAL === 'true'
+		experimental: process.env.EXPERIMENTAL === "true"
 	});
 
 	return stream.get();
 };
+
+export default renderToString;

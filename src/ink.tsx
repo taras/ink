@@ -8,12 +8,11 @@ import signalExit from "signal-exit";
 import { createNode } from "./dom";
 import instances from "./instances";
 import App from "./components/App";
-import { WriteStream, ReadStream } from "tty";
 import { DOMNode } from "./dom";
 
 export interface InkOptions {
-	stdout: WriteStream;
-	stdin: ReadStream;
+	stdout: NodeJS.WriteStream;
+	stdin: NodeJS.ReadStream;
 	debug: boolean;
 	exitOnCtrlC: boolean;
 	waitUntilExit?: () => Promise<any>;
