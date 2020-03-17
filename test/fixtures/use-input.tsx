@@ -1,10 +1,11 @@
 import React from "react";
 import { render, useInput, AppContext } from "../..";
 
-const UserInput = ({ test }) => {
+const UserInput: (props: { test: string }) => JSX.Element = ({ test }) => {
 	const { exit } = React.useContext(AppContext);
 
 	useInput((input, key) => {
+
 		if (test === "lowercase" && input === "q") {
 			exit();
 			return;
@@ -56,7 +57,7 @@ const UserInput = ({ test }) => {
 	return null;
 };
 
-const app = render(<UserInput test={process.argv[3]} />);
+const app = render(<UserInput test={process.argv[2]} />);
 
 (async () => {
 	await app.waitUntilExit();
