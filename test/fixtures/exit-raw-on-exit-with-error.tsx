@@ -1,33 +1,31 @@
-/* eslint-disable react/prop-types */
-'use strict';
-const React = require('react');
-const {render, Box, AppContext, StdinContext} = require('../..');
+import React from "react";
+import { render, Box, AppContext, StdinContext } from "../..";
 
-class Test extends React.Component {
+class Test extends React.Component<{
+	onSetRawMode: (value: boolean) => void;
+	onExit: (error: Error) => void;
+}> {
 	render() {
-		return (
-			<Box>Hello World</Box>
-		);
+		return <Box>Hello World</Box>;
 	}
 
 	componentDidMount() {
 		this.props.onSetRawMode(true);
-		setTimeout(() => this.props.onExit(new Error('errored')), 500);
+		setTimeout(() => this.props.onExit(new Error("errored")), 500);
 	}
 }
 
-const app = render((
+const app = render(
 	<AppContext.Consumer>
-		{({exit}) => (
+		{({ exit }) => (
 			<StdinContext.Consumer>
-				{({setRawMode}) => (
-					<Test onExit={exit} onSetRawMode={setRawMode}/>
-				)}
+				{({ setRawMode }) => <Test onExit={exit} onSetRawMode={setRawMode} />}
 			</StdinContext.Consumer>
 		)}
-	</AppContext.Consumer>
-), {
-	experimental: process.env.EXPERIMENTAL === 'true'
-});
+	</AppContext.Consumer>,
+	{
+		experimental: process.env.EXPERIMENTAL === "true"
+	}
+);
 
 app.waitUntilExit().catch(error => console.log(error.message));

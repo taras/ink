@@ -1,17 +1,13 @@
-/* eslint-disable react/jsx-fragments */
-'use strict';
-const React = require('react');
-const {render, Static, Box} = require('../..');
+import React from "react";
+import { render, Static, Box } from "../..";
 
-class Test extends React.Component {
-	constructor() {
-		super();
+class Test extends React.Component<{}, { counter: number; items: string[] }> {
+	timer: NodeJS.Timeout;
 
-		this.state = {
-			items: [],
-			counter: 0
-		};
-	}
+	state = {
+		items: [],
+		counter: 0
+	};
 
 	render() {
 		return (
@@ -35,10 +31,7 @@ class Test extends React.Component {
 
 			this.setState(prevState => ({
 				counter: prevState.counter + 1,
-				items: [
-					...prevState.items,
-					`#${prevState.counter + 1}`
-				]
+				items: [...prevState.items, `#${prevState.counter + 1}`]
 			}));
 
 			this.timer = setTimeout(onTimeout, 100);
@@ -52,6 +45,6 @@ class Test extends React.Component {
 	}
 }
 
-render(<Test/>, {
-	experimental: process.env.EXPERIMENTAL === 'true'
+render(<Test />, {
+	experimental: process.env.EXPERIMENTAL === "true"
 });

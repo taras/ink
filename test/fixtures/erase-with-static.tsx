@@ -1,7 +1,5 @@
-/* eslint-disable react/jsx-fragments */
-'use strict';
-const React = require('react');
-const {Static, Box, Text, render} = require('../..');
+import React from "react";
+import { Static, Box, Text, render } from "../..";
 
 const EraseWithStatic = () => (
 	<React.Fragment>
@@ -20,4 +18,4 @@ const EraseWithStatic = () => (
 );
 
 process.stdout.rows = Number(process.argv[3]);
-render(<EraseWithStatic/>, {experimental: true});
+render(<EraseWithStatic />, { experimental: true });

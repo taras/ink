@@ -12,7 +12,7 @@ const term = (fixture, args = []) => {
 		reject = reject2;
 	});
 
-	const ps = spawn('node', ['./fixtures/run', `./${fixture}`, ...args], {
+	const ps = spawn('ts-node', ['./fixtures/run', `./${fixture}`, ...args], {
 		name: 'xterm-color',
 		cols: 100,
 		cwd: __dirname,

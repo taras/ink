@@ -1,6 +1,6 @@
-'use strict';
-const React = require('react');
-const {Box, Text, render} = require('../../build');
+import React from "react";
+import { Box, Text, render } from "../..";
+
 
 const Erase = () => (
 	<Box flexDirection="column">

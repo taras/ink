@@ -20,15 +20,15 @@ interface TtyStreams {
 }
 
 interface InkControls<T> {
-	rerender: Ink<T>["render"];
-	unmount: Ink<T>["unmount"];
-	waitUntilExit: Ink<T>["waitUntilExit"];
-	cleanup: () => void;
+	rerender?: Ink<T>["render"];
+	unmount?: Ink<T>["unmount"];
+	waitUntilExit?: Ink<T>["waitUntilExit"];
+	cleanup?: () => void;
 }
 
 type RenderFunction = <T extends WriteStream | RenderOptions = {}>(
 	node: ReactNode,
-	options: T
+	options?: T
 ) => InkControls<
 	T extends { experimental: true } ? ExperimentalDOMNode : DOMNode
 >;
@@ -39,7 +39,7 @@ const render: RenderFunction = (
 ): InkControls<DOMNode | ExperimentalDOMNode> => {
 	const defaults = {
 		experimental: false,
-		...options
+		...(options ?? {})
 	};
 
 	const inkOptions: InkOptions = {

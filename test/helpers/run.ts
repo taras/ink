@@ -2,7 +2,7 @@ import {spawn} from 'node-pty';
 
 export default (fixture, {env} = {}) => {
 	return new Promise((resolve, reject) => {
-		const term = spawn('node', [`${__dirname}/../fixtures/run`, `./${fixture}`], {
+		const term = spawn('ts-node', [`${__dirname}/../fixtures/run`, `./${fixture}`], {
 			name: 'xterm-color',
 			cols: 100,
 			cwd: __dirname,

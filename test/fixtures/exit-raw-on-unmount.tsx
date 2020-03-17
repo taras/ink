@@ -1,13 +1,11 @@
-/* eslint-disable react/prop-types */
-'use strict';
-const React = require('react');
-const {render, Box, StdinContext} = require('../..');
+import React from "react";
+import { render, Box, StdinContext } from "../..";
 
-class Test extends React.Component {
+class Test extends React.Component<{
+	onSetRawMode: (value: boolean) => void;
+}> {
 	render() {
-		return (
-			<Box>Hello World</Box>
-		);
+		return <Box>Hello World</Box>;
 	}
 
 	componentDidMount() {
@@ -15,15 +13,14 @@ class Test extends React.Component {
 	}
 }
 
-const app = render((
+const app = render(
 	<StdinContext.Consumer>
-		{({setRawMode}) => (
-			<Test onSetRawMode={setRawMode}/>
-		)}
-	</StdinContext.Consumer>
-), {
-	experimental: process.env.EXPERIMENTAL === 'true'
-});
+		{({ setRawMode }) => <Test onSetRawMode={setRawMode} />}
+	</StdinContext.Consumer>,
+	{
+		experimental: process.env.EXPERIMENTAL === "true"
+	}
+);
 
 setTimeout(() => app.unmount(), 500);
-app.waitUntilExit().then(() => console.log('exited'));
+app.waitUntilExit().then(() => console.log("exited"));

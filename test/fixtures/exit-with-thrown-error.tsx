@@ -1,15 +1,12 @@
-'use strict';
-const React = require('react');
-const {render} = require('../..');
+import React from "react";
+import { render } from "../..";
 
-class Test extends React.Component {
-	render() {
-		throw new Error('errored');
-	}
+const Test = () => {
+	throw new Error("errored");
 }
 
-const app = render(<Test/>, {
-	experimental: process.env.EXPERIMENTAL === 'true'
+const app = render(<Test />, {
+	experimental: process.env.EXPERIMENTAL === "true"
 });
 
 app.waitUntilExit().catch(error => console.log(error.message));

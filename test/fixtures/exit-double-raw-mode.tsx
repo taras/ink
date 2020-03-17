@@ -1,15 +1,15 @@
-/* eslint-disable react/prop-types */
-'use strict';
-const React = require('react');
-const {render, Box, StdinContext} = require('../..');
+import React from "react";
+import { Box, render, StdinContext } from "../..";
 
-class ExitDoubleRawMode extends React.Component {
+class ExitDoubleRawMode extends React.Component<{
+	setRawMode: (value: boolean) => void;
+}> {
 	render() {
 		return <Box>Hello World</Box>;
 	}
 
 	componentDidMount() {
-		const {setRawMode} = this.props;
+		const { setRawMode } = this.props;
 
 		setRawMode(true);
 
@@ -20,20 +20,19 @@ class ExitDoubleRawMode extends React.Component {
 	}
 }
 
-const {unmount, waitUntilExit} = render((
+const { unmount, waitUntilExit } = render(
 	<StdinContext.Consumer>
-		{({setRawMode}) => (
-			<ExitDoubleRawMode setRawMode={setRawMode}/>
-		)}
-	</StdinContext.Consumer>
-), {
-	experimental: process.env.EXPERIMENTAL === 'true'
-});
+		{({ setRawMode }) => <ExitDoubleRawMode setRawMode={setRawMode} />}
+	</StdinContext.Consumer>,
+	{
+		experimental: process.env.EXPERIMENTAL === "true"
+	}
+);
 
-process.stdin.on('data', data => {
-	if (String(data) === 'q') {
+process.stdin.on("data", data => {
+	if (String(data) === "q") {
 		unmount();
 	}
 });
 
-waitUntilExit().then(() => console.log('exited'));
+waitUntilExit().then(() => console.log("exited"));

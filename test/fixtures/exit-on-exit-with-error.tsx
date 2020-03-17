@@ -1,25 +1,22 @@
-/* eslint-disable react/prop-types */
-'use strict';
-const React = require('react');
-const {render, Box, AppContext} = require('../..');
+import React from "react";
+import { render, Box, AppContext } from "../..";
 
-class Test extends React.Component {
-	constructor() {
-		super();
+class Test extends React.Component<
+	{ onExit: (error: Error) => void },
+	{ counter: number }
+> {
+	timer: NodeJS.Timeout;
 
-		this.state = {
-			counter: 0
-		};
-	}
+	state = {
+		counter: 0
+	};
 
 	render() {
-		return (
-			<Box>Counter: {this.state.counter}</Box>
-		);
+		return <Box>Counter: {this.state.counter}</Box>;
 	}
 
 	componentDidMount() {
-		setTimeout(() => this.props.onExit(new Error('errored')), 500);
+		setTimeout(() => this.props.onExit(new Error("errored")), 500);
 
 		this.timer = setInterval(() => {
 			this.setState(prevState => ({
@@ -33,14 +30,13 @@ class Test extends React.Component {
 	}
 }
 
-const app = render((
+const app = render(
 	<AppContext.Consumer>
-		{({exit}) => (
-			<Test onExit={exit}/>
-		)}
-	</AppContext.Consumer>
-), {
-	experimental: process.env.EXPERIMENTAL === 'true'
-});
+		{({ exit }) => <Test onExit={exit} />}
+	</AppContext.Consumer>,
+	{
+		experimental: process.env.EXPERIMENTAL === "true"
+	}
+);
 
-app.waitUntilExit().catch(error => console.log(error.message));
+app.waitUntilExit().catch((error: Error) => console.log(error.message));

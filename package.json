@@ -93,6 +93,7 @@
 		"sinon": "^8.1.1",
 		"strip-ansi": "^6.0.0",
 		"svg-term-cli": "^2.1.1",
+		"ts-node": "8.6.2",
 		"tsd": "^0.11.0",
 		"xo": "^0.25.3"
 	},
@@ -115,6 +116,7 @@
 					}
 				}
 			],
+			"@babel/react",
 			"@babel/typescript"
 		],
 		"plugins": [
@@ -123,31 +125,11 @@
 		]
 	},
 	"ava": {
-		"babel": {
-			"compileAsTests": [
-				"test/helpers/*.tsx"
-			],
-			"testOptions": {
-				"presets": [
-					[
-						"@babel/env",
-						{
-							"targets": {
-								"node": 8
-							}
-						}
-					],
-					"@babel/react",
-					"@babel/typescript"
-				],
-				"plugins": [
-					"@babel/proposal-class-properties",
-					"@babel/proposal-object-rest-spread"
-				]
-			}
-		},
-		"files": [
-			"test/*.js"
+		"extensions": [
+			"ts", "tsx"
+		],
+		"require": [
+			"ts-node/register/transpile-only"
 		]
 	},
 	"xo": {
