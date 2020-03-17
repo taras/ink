@@ -2,7 +2,7 @@
 import React from 'react';
 import test from 'ava';
 import renderToString from './helpers/render-to-string';
-import {Box} from '../build';
+import {Box} from '../src';
 
 test('row - align text to center', t => {
 	const output = renderToString(
