@@ -7,7 +7,7 @@ import {spy} from 'sinon';
 import stripAnsi from 'strip-ansi';
 import renderToString from './helpers/render-to-string';
 import run from './helpers/run';
-import {Box, Color, Text, Static, StdinContext, render} from '..';
+import {Box, Color, Text, Static, StdinContext, render} from '../build';
 
 const isExperimental = process.env.EXPERIMENTAL === 'true';
 

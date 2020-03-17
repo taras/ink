@@ -1,9 +1,8 @@
-/* eslint-disable react/jsx-curly-brace-presence */
 import React from 'react';
 import test from 'ava';
 import chalk from 'chalk';
 import renderToString from './helpers/render-to-string';
-import {Box, Color} from '..';
+import {Box, Color} from '../build';
 
 test('row - align text to center', t => {
 	const output = renderToString(

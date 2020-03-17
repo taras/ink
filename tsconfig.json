@@ -4,9 +4,11 @@
 		"esModuleInterop": true,
 		"jsx": "react",
 		"noImplicitAny": true,
-		"target": "es2017",
+		"declaration": true,
+		"allowSyntheticDefaultImports": true,
+		"target": "esnext",
 		"module": "commonjs",
-		"lib": ["es2017"]
+		"outDir": "build"
 	},
 	"include": ["src"]
 }

@@ -1,5 +1,3 @@
-import Yoga from "yoga-layout-prebuilt";
-
 export interface WrapTextStyles {
 	textWrap?:
 		| "wrap"

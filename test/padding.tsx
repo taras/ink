@@ -1,7 +1,7 @@
 import React from 'react';
 import test from 'ava';
 import renderToString from './helpers/render-to-string';
-import {Box} from '..';
+import {Box} from '../build';
 
 test('padding', t => {
 	const output = renderToString(<Box padding={2}>X</Box>);

@@ -3,7 +3,7 @@ import React from 'react';
 import test from 'ava';
 import chalk from 'chalk';
 import {spy} from 'sinon';
-import {Box, Color, render} from '..';
+import {Box, Color, render} from '../build';
 
 const isExperimental = process.env.EXPERIMENTAL === 'true';
 

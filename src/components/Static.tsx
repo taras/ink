@@ -1,11 +1,13 @@
 import React, { Component, ReactNode, ReactNodeArray } from "react";
 import PropTypes from "prop-types";
+import { Styles } from '../styles';
 
 const childrenToArray = (children: ReactNode) =>
 	Array.isArray(children) ? children : [children];
 
 interface StaticProps {
 	children: ReactNodeArray;
+	style: Styles
 }
 
 interface StaticState {
@@ -24,7 +26,7 @@ interface StaticState {
 // rendering test stats at the end of the output.
 export default class Static extends Component<StaticProps, StaticState> {
 	static propTypes = {
-		children: PropTypes.node
+		children: PropTypes.node,
 	};
 
 	state: StaticState = {

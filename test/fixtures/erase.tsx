@@ -1,6 +1,6 @@
 'use strict';
 const React = require('react');
-const {Box, Text, render} = require('../..');
+const {Box, Text, render} = require('../../build');
 
 const Erase = () => (
 	<Box flexDirection="column">

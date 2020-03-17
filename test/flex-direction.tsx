@@ -1,7 +1,7 @@
 import React from 'react';
 import test from 'ava';
 import renderToString from './helpers/render-to-string';
-import {Box, Text} from '..';
+import {Box, Text} from '../build';
 
 test('direction row', t => {
 	const output = renderToString(

@@ -16,15 +16,16 @@
 	"scripts": {
 		"type-check": "tsc --noEmit",
 		"type-check:watch": "npm run type-check -- --watch",
-		"build": "babel src --out-dir=build --extensions \".js,.ts,.tsx\" --source-maps inline",
+		"build": "npm run build:types && npm run build:js",
+		"build:types": "tsc --emitDeclarationOnly",
+		"build:js": "babel src --out-dir=build --extensions \".js,.ts,.tsx\" --source-maps inline",
 		"prepare": "npm run build",
 		"test": "xo && FORCE_COLOR=true EXPERIMENTAL=true ava && FORCE_COLOR=true ava && tsd",
 		"pretest": "npm run build",
 		"cast": "svg-term --command='node media/demo.js' --out=media/demo.svg --from=100 --window --width=50 --height=8 --term=iterm2 --profile=Snazzy"
 	},
 	"files": [
-		"build",
-		"index.d.ts"
+		"build"
 	],
 	"keywords": [
 		"react",
@@ -58,15 +59,15 @@
 		"typescript": "3.8.3",
 		"widest-line": "^3.1.0",
 		"wrap-ansi": "^6.2.0",
-		"yoga-layout-prebuilt": "taras/yoga-layout-prebuilt#type-definitions"
+		"yoga-layout-prebuilt": "1.9.5"
 	},
 	"devDependencies": {
 		"@ava/babel": "1.0.1",
+		"@ava/typescript": "1.1.1",
 		"@babel/cli": "^7.8.3",
 		"@babel/core": "^7.8.3",
 		"@babel/plugin-proposal-class-properties": "7.8.3",
-		"@babel/plugin-proposal-object-rest-spread": "7.8.3",
-		"@babel/plugin-transform-modules-commonjs": "7.8.3",
+		"@babel/preset-env": "7.8.7",
 		"@babel/preset-react": "^7.8.3",
 		"@babel/preset-typescript": "7.8.3",
 		"@types/is-ci": "2.0.0",
@@ -105,30 +106,43 @@
 		}
 	},
 	"babel": {
-		"plugins": [
-			"@babel/plugin-proposal-class-properties",
-			"@babel/plugin-proposal-object-rest-spread",
-			"@babel/plugin-transform-modules-commonjs"
-		],
 		"presets": [
-			"@babel/preset-react",
-			"@babel/preset-typescript"
+			[
+				"@babel/env",
+				{
+					"targets": {
+						"node": 8
+					}
+				}
+			],
+			"@babel/typescript"
+		],
+		"plugins": [
+			"@babel/proposal-class-properties",
+			"@babel/proposal-object-rest-spread"
 		]
 	},
 	"ava": {
 		"babel": {
 			"compileAsTests": [
-				"test/helpers/*.js"
+				"test/helpers/*.tsx"
 			],
 			"testOptions": {
-				"plugins": [
-					"@babel/plugin-proposal-class-properties",
-					"@babel/plugin-proposal-object-rest-spread",
-					"@babel/plugin-transform-modules-commonjs"
-				],
 				"presets": [
-					"@babel/preset-react",
-					"@babel/preset-typescript"
+					[
+						"@babel/env",
+						{
+							"targets": {
+								"node": 8
+							}
+						}
+					],
+					"@babel/react",
+					"@babel/typescript"
+				],
+				"plugins": [
+					"@babel/proposal-class-properties",
+					"@babel/proposal-object-rest-spread"
 				]
 			}
 		},
