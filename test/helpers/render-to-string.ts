@@ -1,6 +1,5 @@
-import { render } from "../../build";
-import { DOMNode } from "../../build/dom";
-import { ExperimentalDOMNode } from "../../build/experimental/dom";
+import { ReactNode } from "react";
+import { render } from "../../src";
 
 // Fake process.stdout
 class Stream {
@@ -21,8 +20,8 @@ class Stream {
 }
 
 const renderToString: (
-	node: DOMNode | ExperimentalDOMNode,
-	options: { columns?: number }
+	node: ReactNode,
+	options?: { columns?: number }
 ) => string = (node, { columns } = {}) => {
 	const stream = new Stream({ columns });
 

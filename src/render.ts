@@ -34,7 +34,7 @@ const render: RenderFunction = (
 ): InkControls<DOMNode | ExperimentalDOMNode> => {
 	const defaults = {
 		experimental: false,
-		...(options ?? {})
+		...(options || {})
 	};
 
 	const inkOptions: InkOptions = {
