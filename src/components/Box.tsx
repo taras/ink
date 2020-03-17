@@ -39,7 +39,7 @@ interface BoxProps {
 		| "truncate-start"
 		| "truncate-middle"
 		| "truncate-end";
-	readonly unstable__transformChildren: (x: any) => any;
+	readonly unstable__transformChildren?: (x: any) => any;
 }
 
 export default class Box extends PureComponent<BoxProps> {

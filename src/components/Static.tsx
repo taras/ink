@@ -7,7 +7,6 @@ const childrenToArray = (children: ReactNode) =>
 
 interface StaticProps {
 	children: ReactNodeArray;
-	style: Styles
 }
 
 interface StaticState {
@@ -24,7 +23,7 @@ interface StaticState {
 // A good example of where this component might be useful is interface like Jest's.
 // When running tests, Jest keeps writing completed tests to output, while continuously
 // rendering test stats at the end of the output.
-export default class Static extends Component<StaticProps, StaticState> {
+export default class Static extends Component<StaticProps & Styles, StaticState> {
 	static propTypes = {
 		children: PropTypes.node,
 	};
