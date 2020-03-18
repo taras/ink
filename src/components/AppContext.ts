@@ -1,5 +1,9 @@
 import React from 'react';
 
-export default React.createContext({
-	exit: (error?: number | Error) => {}
+interface AppContextValue {
+	exit: (error?: number | Error) => void;
+}
+
+export default React.createContext<AppContextValue>({
+	exit: () => {}
 });

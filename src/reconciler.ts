@@ -3,7 +3,7 @@ import {
 	unstable_scheduleCallback as schedulePassiveEffects,
 	unstable_cancelCallback as cancelPassiveEffects
 } from 'scheduler';
-import ReactReconciler, {HostConfig} from 'react-reconciler';
+import createReconciler, {HostConfig} from 'react-reconciler';
 import {
 	createNode,
 	createTextNode,
@@ -131,4 +131,4 @@ const hostConfig: HostConfig<NodeNames, Props, DOMNode, any, any, any, any, any,
 	removeChild: removeChildNode
 };
 
-export default ReactReconciler(hostConfig);
+export default createReconciler(hostConfig);

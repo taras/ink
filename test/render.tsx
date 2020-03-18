@@ -2,9 +2,9 @@ import {serial as test} from 'ava';
 import {spawn} from 'node-pty';
 import ansiEscapes from 'ansi-escapes';
 
-const term = (fixture, args = []) => {
-	let resolve;
-	let reject;
+const term = (fixture: string, args: string[] = []) => {
+	let resolve: (value?: any) => void;
+	let reject: (error: Error) => void;
 
 	// eslint-disable-next-line promise/param-names
 	const exitPromise = new Promise((resolve2, reject2) => {

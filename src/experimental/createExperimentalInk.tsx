@@ -81,7 +81,7 @@ export function createExperimentalInk(options: InkOptions): Ink<ExperimentalDOMN
 		throttle(onRender, 16, {
 			leading: true,
 			trailing: true
-		  });
+		});
 
 	rootNode.onImmediateRender = onRender;
 

@@ -1,5 +1,4 @@
-/* eslint-disable camelcase */
-import React, {PureComponent, HTMLAttributes} from 'react';
+import React, {PureComponent} from 'react';
 import PropTypes from 'prop-types';
 import {YogaNode} from 'yoga-layout-prebuilt';
 
