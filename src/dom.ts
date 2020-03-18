@@ -1,8 +1,8 @@
 import Yoga from 'yoga-layout-prebuilt';
-import { ReactNode } from "react";
-import { Styles } from './styles';
-import { OutputTransformer } from './render-node-to-output';
-export type NodeNames = "root" | "div" | "span" ;
+import {ReactNode} from 'react';
+import {Styles} from './styles';
+import {OutputTransformer} from './render-node-to-output';
+export type NodeNames = 'root' | 'div' | 'span';
 
 export interface DOMNode {
 	nodeName: string;
@@ -14,9 +14,9 @@ export interface DOMNode {
 	childNodes: DOMNode[];
 	parentNode?: DOMNode;
 	onRender: () => void;
-	unstable__transformChildren?: OutputTransformer
+	unstable__transformChildren?: OutputTransformer;
 	unstable__static?: boolean;
-	yogaNode?: Yoga.YogaNode
+	yogaNode?: Yoga.YogaNode;
 	nodeValue?: string;
 }
 
@@ -85,6 +85,6 @@ export const setAttribute = (
 };
 
 export const createTextNode = (text: string) => ({
-	nodeName: "#text",
+	nodeName: '#text',
 	nodeValue: text
 });

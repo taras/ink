@@ -1,14 +1,13 @@
-import React, { ReactNode } from "react";
-import throttle from "lodash.throttle";
-import logUpdate, { LogUpdate } from "log-update";
-import isCI from "is-ci";
-import reconciler from "./reconciler";
-import createRenderer, { InkRenderer } from "./renderer";
-import signalExit from "signal-exit";
-import { createNode } from "./dom";
-import instances from "./instances";
-import App from "./components/App";
-import { DOMNode } from "./dom";
+import React, {ReactNode} from 'react';
+import throttle from 'lodash.throttle';
+import logUpdate, {LogUpdate} from 'log-update';
+import isCI from 'is-ci';
+import reconciler from './reconciler';
+import createRenderer, {InkRenderer} from './renderer';
+import signalExit from 'signal-exit';
+import {createNode, DOMNode} from './dom';
+import instances from './instances';
+import App from './components/App';
 
 export interface InkOptions {
 	stdout: NodeJS.WriteStream;
@@ -42,17 +41,17 @@ export interface Ink<Type> {
 }
 
 export function createInk(options: InkOptions): Ink<DOMNode> {
-	const rootNode = createNode("root");
+	const rootNode = createNode('root');
 	const log = logUpdate.create(options.stdout);
-	const throttledLog = options.debug
-		? log
-		: throttle(log, undefined, {
-				leading: true,
-				trailing: true
+	const throttledLog = options.debug ?
+		log :
+		throttle(log, undefined, {
+			leading: true,
+			trailing: true
 		  });
 
-	let resolveExitPromise: Ink<DOMNode>["resolveExitPromise"];
-	let rejectExitPromise: Ink<DOMNode>["rejectExitPromise"];
+	let resolveExitPromise: Ink<DOMNode>['resolveExitPromise'];
+	let rejectExitPromise: Ink<DOMNode>['rejectExitPromise'];
 
 	const renderer = createRenderer({
 		terminalWidth: options.stdout.columns
@@ -63,10 +62,10 @@ export function createInk(options: InkOptions): Ink<DOMNode> {
 			return;
 		}
 
-		const { output, outputHeight, staticOutput } = renderer(rootNode);
+		const {output, outputHeight, staticOutput} = renderer(rootNode);
 
 		// If <Static> output isn't empty, it means new children have been added to it
-		const hasStaticOutput = staticOutput && staticOutput !== "\n";
+		const hasStaticOutput = staticOutput && staticOutput !== '\n';
 
 		if (options.debug) {
 			if (hasStaticOutput) {
@@ -116,7 +115,7 @@ export function createInk(options: InkOptions): Ink<DOMNode> {
 		// CIs don't handle erasing ansi escapes well, so it's better to
 		// only render last frame of non-static output
 		if (isCI) {
-			options.stdout.write(instance.lastOutput + "\n");
+			options.stdout.write(instance.lastOutput + '\n');
 		} else if (!options.debug) {
 			log.done();
 		}
@@ -149,7 +148,7 @@ export function createInk(options: InkOptions): Ink<DOMNode> {
 		reconciler.updateContainer(tree, container, undefined, undefined);
 	};
 
-	const unsubscribeExit = signalExit(unmount, { alwaysLast: false });
+	const unsubscribeExit = signalExit(unmount, {alwaysLast: false});
 
 	const exitPromise = new Promise((resolve, reject) => {
 		resolveExitPromise = resolve;
@@ -161,13 +160,13 @@ export function createInk(options: InkOptions): Ink<DOMNode> {
 	const instance = {
 		options,
 		log,
-		fullStaticOutput: "",
+		fullStaticOutput: '',
 		renderer,
 		onRender,
 		isUnmounted: false,
 		throttledLog,
 		// Store last output to only rerender when needed
-		lastOutput: "",
+		lastOutput: '',
 		rootNode,
 		render,
 		container,

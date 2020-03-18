@@ -1,12 +1,12 @@
-import React from "react";
-import { render, Static, Box } from "../../src";
+import React from 'react';
+import {render, Static, Box} from '../../src';
 
 interface TestState {
 	counter: number;
 	items: string[];
 }
 
-class Test extends React.Component<{}, TestState> {
+class Test extends React.Component<Record<string, unknown>, TestState> {
 	timer: NodeJS.Timeout;
 
 	state: TestState = {
@@ -51,5 +51,5 @@ class Test extends React.Component<{}, TestState> {
 }
 
 render(<Test />, {
-	experimental: process.env.EXPERIMENTAL === "true"
+	experimental: process.env.EXPERIMENTAL === 'true'
 });

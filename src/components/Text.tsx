@@ -1,14 +1,14 @@
 /* eslint-disable camelcase */
-import React, { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
-import chalk from "chalk";
+import React, {FC, ReactNode} from 'react';
+import PropTypes from 'prop-types';
+import chalk from 'chalk';
 
 interface TextProps {
 	readonly bold?: boolean;
 	readonly italic?: boolean;
 	readonly underline?: boolean;
 	readonly strikethrough?: boolean;
-	readonly unstable__transformChildren?: (x: string) => string
+	readonly unstable__transformChildren?: (x: string) => string;
 }
 
 const Text: FC<TextProps & { children: ReactNode }> = ({
@@ -45,7 +45,7 @@ const Text: FC<TextProps & { children: ReactNode }> = ({
 
 	return (
 		<span
-			style={{ flexDirection: "row" }}
+			style={{flexDirection: 'row'}}
 			// @ts-ignore
 			unstable__transformChildren={transformChildren}
 		>

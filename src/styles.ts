@@ -1,16 +1,16 @@
 export interface WrapTextStyles {
 	textWrap?:
-		| "wrap"
-		| "end"
-		| "middle"
-		| "truncate-end"
-		| "truncate"
-		| "truncate-middle"
-		| "truncate-start";
+	| 'wrap'
+	| 'end'
+	| 'middle'
+	| 'truncate-end'
+	| 'truncate'
+	| 'truncate-middle'
+	| 'truncate-start';
 }
 
 export interface PositionStyles {
-	position?: "absolute" | "relative";
+	position?: 'absolute' | 'relative';
 }
 
 export interface MarginStyles {
@@ -36,15 +36,15 @@ export interface PaddingStyles {
 export interface FlexStyles {
 	flexGrow?: number;
 	flexShrink?: number;
-	flexDirection?: "row" | "column" | "row-reverse" | "column-reverse";
+	flexDirection?: 'row' | 'column' | 'row-reverse' | 'column-reverse';
 	flexBasis?: number | string;
-	alignItems?: "flex-start" | "center" | "flex-end" | "stretch";
+	alignItems?: 'flex-start' | 'center' | 'flex-end' | 'stretch';
 	justifyContent?:
-		| "flex-start"
-		| "flex-end"
-		| "space-between"
-		| "space-around"
-		| "center";
+	| 'flex-start'
+	| 'flex-end'
+	| 'space-between'
+	| 'space-around'
+	| 'center';
 }
 
 export interface DimensionStyles {
@@ -55,8 +55,8 @@ export interface DimensionStyles {
 }
 
 export type Styles = PaddingStyles &
-	MarginStyles &
-	FlexStyles &
-	DimensionStyles &
-	PositionStyles &
-	WrapTextStyles;
+MarginStyles &
+FlexStyles &
+DimensionStyles &
+PositionStyles &
+WrapTextStyles;

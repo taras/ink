@@ -1,5 +1,5 @@
-import React from "react";
-import { Static, Box, Text, render } from "../../src";
+import React from 'react';
+import {Static, Box, Text, render} from '../../src';
 
 const EraseWithStatic = () => (
 	<React.Fragment>
@@ -18,4 +18,4 @@ const EraseWithStatic = () => (
 );
 
 process.stdout.rows = Number(process.argv[3]);
-render(<EraseWithStatic />, { experimental: true });
+render(<EraseWithStatic />, {experimental: true});

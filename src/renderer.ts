@@ -1,9 +1,9 @@
-import Yoga, { YogaNode } from "yoga-layout-prebuilt";
-import Output from "./output";
-import { createNode, appendStaticNode, DOMNode } from "./dom";
-import buildLayout from "./build-layout";
-import renderNodeToOutput from "./render-node-to-output";
-import calculateWrappedText from "./calculate-wrapped-text";
+import Yoga, {YogaNode} from 'yoga-layout-prebuilt';
+import Output from './output';
+import {createNode, appendStaticNode, DOMNode} from './dom';
+import buildLayout from './build-layout';
+import renderNodeToOutput from './render-node-to-output';
+import calculateWrappedText from './calculate-wrapped-text';
 
 // Since <Static> components can be placed anywhere in the tree, this helper finds and returns them
 const getStaticNodes = (element: DOMNode): DOMNode[] => {
@@ -40,7 +40,7 @@ type RendererCreator = (options: {
 ) => { output: string; outputHeight: number; staticOutput: string };
 
 // Build layout, apply styles, build text output of all nodes and return it
-const createRenderer: RendererCreator = ({ terminalWidth }) => {
+const createRenderer: RendererCreator = ({terminalWidth}) => {
 	const config = Yoga.Config.create();
 
 	// Used to free up memory used by last Yoga node tree
@@ -58,18 +58,18 @@ const createRenderer: RendererCreator = ({ terminalWidth }) => {
 
 		const staticElements = getStaticNodes(node);
 		if (staticElements.length > 1) {
-			if (process.env.NODE_ENV !== "production") {
-				console.error("Warning: There can only be one <Static> component");
+			if (process.env.NODE_ENV !== 'production') {
+				console.error('Warning: There can only be one <Static> component');
 			}
 		}
 
 		// <Static> component must be built and rendered separately, so that the layout of the other output is unaffected
 		let staticOutput;
 		if (staticElements.length === 1) {
-			const rootNode = createNode("root");
+			const rootNode = createNode('root');
 			appendStaticNode(rootNode, staticElements[0]);
 
-			const { yogaNode: staticYogaNode } = buildLayout(rootNode, {
+			const {yogaNode: staticYogaNode} = buildLayout(rootNode, {
 				config,
 				terminalWidth,
 				skipStaticElements: false
@@ -87,10 +87,10 @@ const createRenderer: RendererCreator = ({ terminalWidth }) => {
 				height: staticYogaNode.getComputedHeight()
 			});
 
-			renderNodeToOutput(rootNode, staticOutput, { skipStaticElements: false });
+			renderNodeToOutput(rootNode, staticOutput, {skipStaticElements: false});
 		}
 
-		const { yogaNode } = buildLayout(node, {
+		const {yogaNode} = buildLayout(node, {
 			config,
 			terminalWidth,
 			skipStaticElements: true
@@ -108,7 +108,7 @@ const createRenderer: RendererCreator = ({ terminalWidth }) => {
 			height: yogaNode.getComputedHeight()
 		});
 
-		renderNodeToOutput(node, output, { skipStaticElements: true });
+		renderNodeToOutput(node, output, {skipStaticElements: true});
 
 		return {
 			output: output.get(),

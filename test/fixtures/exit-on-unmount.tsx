@@ -1,7 +1,7 @@
-import React from "react";
-import { render, Box } from "../../src";
+import React from 'react';
+import {render, Box} from '../../src';
 
-class Test extends React.Component<{}, { counter: number }> {
+class Test extends React.Component<Record<string, unknown>, { counter: number }> {
 	timer: NodeJS.Timeout;
 
 	state = {
@@ -26,8 +26,8 @@ class Test extends React.Component<{}, { counter: number }> {
 }
 
 const app = render(<Test />, {
-	experimental: process.env.EXPERIMENTAL === "true"
+	experimental: process.env.EXPERIMENTAL === 'true'
 });
 
 setTimeout(() => app.unmount(), 500);
-app.waitUntilExit().then(() => console.log("exited"));
+app.waitUntilExit().then(() => console.log('exited'));

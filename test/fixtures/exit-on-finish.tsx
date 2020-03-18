@@ -1,12 +1,12 @@
-import React from "react";
-import { render, Box } from "../../src";
+import React from 'react';
+import {render, Box} from '../../src';
 
-class Test extends React.Component<{}, { counter: number }> {
-	timer: NodeJS.Timeout
+class Test extends React.Component<Record<string, unknown>, { counter: number }> {
+	timer: NodeJS.Timeout;
 
 	state = {
 		counter: 0
-	}
+	};
 
 	render() {
 		return (

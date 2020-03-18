@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
-import { render } from "../../src";
+import {ReactNode} from 'react';
+import {render} from '../../src';
 
 // Fake process.stdout
 class Stream {
-	output: string = "";
+	output = '';
 	columns: number;
 
-	constructor({ columns }) {
+	constructor({columns}) {
 		this.columns = columns || 100;
 	}
 
@@ -22,14 +22,14 @@ class Stream {
 const renderToString: (
 	node: ReactNode,
 	options?: { columns?: number }
-) => string = (node, { columns } = {}) => {
-	const stream = new Stream({ columns });
+) => string = (node, {columns} = {}) => {
+	const stream = new Stream({columns});
 
 	render(node, {
 		// @ts-ignore
 		stdout: stream,
 		debug: true,
-		experimental: process.env.EXPERIMENTAL === "true"
+		experimental: process.env.EXPERIMENTAL === 'true'
 	});
 
 	return stream.get();

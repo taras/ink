@@ -1,9 +1,9 @@
-import { ReactNode } from 'react';
+import {ReactNode} from 'react';
 import {
 	unstable_scheduleCallback as schedulePassiveEffects,
 	unstable_cancelCallback as cancelPassiveEffects
 } from 'scheduler';
-import ReactReconciler, { HostConfig } from "react-reconciler";
+import ReactReconciler, {HostConfig} from 'react-reconciler';
 import {
 	createNode,
 	createTextNode,
@@ -20,7 +20,7 @@ import {
 const NO_CONTEXT = true;
 
 interface Props {
-	children: ReactNode
+	children: ReactNode;
 }
 
 const hostConfig: HostConfig<NodeNames, Props, ExperimentalDOMNode, any, any, any, any, any, any, any, any, any> = {
@@ -96,6 +96,7 @@ const hostConfig: HostConfig<NodeNames, Props, ExperimentalDOMNode, any, any, an
 		if (node.unstable__static) {
 			rootNode.isStaticDirty = true;
 		}
+
 		return false;
 	},
 	supportsMutation: true,

@@ -1,12 +1,12 @@
-import { ReactNode } from "react";
-import Yoga from "yoga-layout-prebuilt";
-import measureText from "../measure-text";
-import applyStyle from "./apply-style";
-import { DOMNodeAttribute } from "../dom";
-import { Styles } from "../styles";
-import { OutputTransformer } from "../render-node-to-output";
+import {ReactNode} from 'react';
+import Yoga from 'yoga-layout-prebuilt';
+import measureText from '../measure-text';
+import applyStyle from './apply-style';
+import {DOMNodeAttribute} from '../dom';
+import {Styles} from '../styles';
+import {OutputTransformer} from '../render-node-to-output';
 
-export type NodeNames = "root" | "div" | "span";
+export type NodeNames = 'root' | 'div' | 'span';
 
 export interface ExperimentalDOMNode {
 	nodeName: NodeNames;
@@ -29,7 +29,7 @@ export interface ExperimentalDOMNode {
 export type NodeTextTypes = ExperimentalDOMNode | ExperimentalTextNode;
 
 export interface ExperimentalTextNode {
-	nodeName: "#text";
+	nodeName: '#text';
 	nodeValue: string | null;
 	yogaNode: Yoga.YogaNode;
 }
@@ -114,7 +114,7 @@ export const setAttribute = (
 
 export const createTextNode = (text: string): ExperimentalTextNode => {
 	const node: ExperimentalTextNode = {
-		nodeName: "#text",
+		nodeName: '#text',
 		nodeValue: text,
 		yogaNode: Yoga.Node.create()
 	};
@@ -125,7 +125,7 @@ export const createTextNode = (text: string): ExperimentalTextNode => {
 };
 
 export const setTextContent = (node: NodeTextTypes, text: string) => {
-	if (typeof text !== "string") {
+	if (typeof text !== 'string') {
 		text = String(text);
 	}
 
@@ -138,7 +138,7 @@ export const setTextContent = (node: NodeTextTypes, text: string) => {
 		height = dimensions.height;
 	}
 
-	if (node.nodeName === "#text") {
+	if (node.nodeName === '#text') {
 		node.nodeValue = text;
 		node.yogaNode.setWidth(width);
 		node.yogaNode.setHeight(height);

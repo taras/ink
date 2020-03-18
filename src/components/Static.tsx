@@ -1,6 +1,6 @@
-import React, { Component, ReactNode, ReactNodeArray } from "react";
-import PropTypes from "prop-types";
-import { Styles } from '../styles';
+import React, {Component, ReactNode, ReactNodeArray} from 'react';
+import PropTypes from 'prop-types';
+import {Styles} from '../styles';
 
 const childrenToArray = (children: ReactNode) =>
 	Array.isArray(children) ? children : [children];
@@ -25,7 +25,7 @@ interface StaticState {
 // rendering test stats at the end of the output.
 export default class Static extends Component<StaticProps & Styles, StaticState> {
 	static propTypes = {
-		children: PropTypes.node,
+		children: PropTypes.node
 	};
 
 	state: StaticState = {
@@ -33,11 +33,11 @@ export default class Static extends Component<StaticProps & Styles, StaticState>
 	};
 
 	render() {
-		const { children, ...otherProps } = this.props;
-		const { lastIndex } = this.state;
+		const {children, ...otherProps} = this.props;
+		const {lastIndex} = this.state;
 		let newChildren = children;
 
-		if (typeof lastIndex === "number") {
+		if (typeof lastIndex === 'number') {
 			newChildren = childrenToArray(children).slice(lastIndex);
 		}
 
@@ -46,8 +46,8 @@ export default class Static extends Component<StaticProps & Styles, StaticState>
 				// @ts-ignore
 				unstable__static
 				style={{
-					position: "absolute",
-					flexDirection: "column",
+					position: 'absolute',
+					flexDirection: 'column',
 					...otherProps
 				}}
 			>

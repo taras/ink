@@ -1,40 +1,40 @@
 /* eslint-disable react/prop-types, react/jsx-curly-brace-presence */
-import EventEmitter from "events";
-import React, { useState } from "react";
-import test from "ava";
-import chalk from "chalk";
-import { spy } from "sinon";
-import stripAnsi from "strip-ansi";
-import renderToString from "./helpers/render-to-string";
-import run from "./helpers/run";
-import { Box, Color, Text, Static, StdinContext, render } from "../src";
+import EventEmitter from 'events';
+import React, {useState} from 'react';
+import test from 'ava';
+import chalk from 'chalk';
+import {spy} from 'sinon';
+import stripAnsi from 'strip-ansi';
+import renderToString from './helpers/render-to-string';
+import run from './helpers/run';
+import {Box, Color, Text, Static, StdinContext, render} from '../src';
 
-const isExperimental = process.env.EXPERIMENTAL === "true";
+const isExperimental = process.env.EXPERIMENTAL === 'true';
 
-test("text", t => {
+test('text', t => {
 	const output = renderToString(<Box>Hello World</Box>);
 
-	t.is(output, "Hello World");
+	t.is(output, 'Hello World');
 });
 
-test("text with variable", t => {
+test('text with variable', t => {
 	const output = renderToString(<Box>Count: {1}</Box>);
 
-	t.is(output, "Count: 1");
+	t.is(output, 'Count: 1');
 });
 
-test("multiple text nodes", t => {
+test('multiple text nodes', t => {
 	const output = renderToString(
 		<Box>
-			{"Hello"}
-			{" World"}
+			{'Hello'}
+			{' World'}
 		</Box>
 	);
 
-	t.is(output, "Hello World");
+	t.is(output, 'Hello World');
 });
 
-test("text with component", t => {
+test('text with component', t => {
 	const World = () => <Box>World</Box>;
 
 	const output = renderToString(
@@ -43,105 +43,105 @@ test("text with component", t => {
 		</Box>
 	);
 
-	t.is(output, "Hello World");
+	t.is(output, 'Hello World');
 });
 
-test("text with fragment", t => {
+test('text with fragment', t => {
 	const output = renderToString(
 		<Box>
 			Hello <>World</> {/* eslint-disable-line react/jsx-no-useless-fragment */}
 		</Box>
 	);
 
-	t.is(output, "Hello World");
+	t.is(output, 'Hello World');
 });
 
-test("wrap text", t => {
+test('wrap text', t => {
 	const output = renderToString(<Box textWrap="wrap">Hello World</Box>, {
 		columns: 7
 	});
 
-	t.is(output, "Hello\nWorld");
+	t.is(output, 'Hello\nWorld');
 });
 
-test("don't wrap text if there is enough space", t => {
+test('don\'t wrap text if there is enough space', t => {
 	const output = renderToString(<Box textWrap="wrap">Hello World</Box>, {
 		columns: 20
 	});
 
-	t.is(output, "Hello World");
+	t.is(output, 'Hello World');
 });
 
-test("truncate text in the end", t => {
+test('truncate text in the end', t => {
 	const output = renderToString(<Box textWrap="truncate">Hello World</Box>, {
 		columns: 7
 	});
 
-	t.is(output, "Hello …");
+	t.is(output, 'Hello …');
 });
 
-test("truncate text in the middle", t => {
+test('truncate text in the middle', t => {
 	const output = renderToString(
 		<Box textWrap="truncate-middle">Hello World</Box>,
-		{ columns: 7 }
+		{columns: 7}
 	);
 
-	t.is(output, "Hel…rld");
+	t.is(output, 'Hel…rld');
 });
 
-test("truncate text in the beginning", t => {
+test('truncate text in the beginning', t => {
 	const output = renderToString(
 		<Box textWrap="truncate-start">Hello World</Box>,
-		{ columns: 7 }
+		{columns: 7}
 	);
 
-	t.is(output, "… World");
+	t.is(output, '… World');
 });
 
-test("empty text node", t => {
+test('empty text node', t => {
 	const output = renderToString(
 		<Box flexDirection="column">
 			<Box>Hello World</Box>
-			{""}
+			{''}
 		</Box>
 	);
 
-	t.is(output, "Hello World");
+	t.is(output, 'Hello World');
 });
 
-test("number", t => {
+test('number', t => {
 	const output = renderToString(<Box>{1}</Box>);
 
-	t.is(output, "1");
+	t.is(output, '1');
 });
 
-test("fragment", t => {
+test('fragment', t => {
 	const output = renderToString(<>Hello World</>);
 
-	t.is(output, "Hello World");
+	t.is(output, 'Hello World');
 });
 
-test("transform children", t => {
+test('transform children', t => {
 	const output = renderToString(
 		<Box unstable__transformChildren={str => `[${str}]`}>
 			<Box unstable__transformChildren={str => `{${str}}`}>test</Box>
 		</Box>
 	);
 
-	t.is(output, "[{test}]");
+	t.is(output, '[{test}]');
 });
 
-test("squash multiple text nodes", t => {
+test('squash multiple text nodes', t => {
 	const output = renderToString(
 		<Box unstable__transformChildren={str => `[${str}]`}>
 			<Box unstable__transformChildren={str => `{${str}}`}>hello world</Box>
 		</Box>
 	);
 
-	t.is(output, "[{hello world}]");
+	t.is(output, '[{hello world}]');
 });
 
-test("squash multiple nested text nodes", t => {
+test('squash multiple nested text nodes', t => {
 	const output = renderToString(
 		<Box unstable__transformChildren={str => `[${str}]`}>
 			<Box unstable__transformChildren={str => `{${str}}`}>
@@ -151,10 +151,10 @@ test("squash multiple nested text nodes", t => {
 		</Box>
 	);
 
-	t.is(output, "[{hello world}]");
+	t.is(output, '[{hello world}]');
 });
 
-test("squash empty `<Text>` nodes", t => {
+test('squash empty `<Text>` nodes', t => {
 	const output = renderToString(
 		<Box unstable__transformChildren={string => `[${string}]`}>
 			<Box unstable__transformChildren={string => `{${string}}`}>
@@ -163,21 +163,21 @@ test("squash empty `<Text>` nodes", t => {
 		</Box>
 	);
 
-	t.is(output, "");
+	t.is(output, '');
 });
 
-test("hooks", t => {
+test('hooks', t => {
 	const WithHooks = () => {
-		const [value] = useState("Hello");
+		const [value] = useState('Hello');
 
 		return <Box>{value}</Box>;
 	};
 
 	const output = renderToString(<WithHooks />);
-	t.is(output, "Hello");
+	t.is(output, 'Hello');
 });
 
-test("static output", t => {
+test('static output', t => {
 	const output = renderToString(
 		<Box>
 			<Static paddingBottom={1}>
@@ -190,16 +190,16 @@ test("static output", t => {
 		</Box>
 	);
 
-	t.is(output, "A\nB\nC\n\n\nX");
+	t.is(output, 'A\nB\nC\n\n\nX');
 });
 
-test("skip previous output when rendering new static output", t => {
+test('skip previous output when rendering new static output', t => {
 	const stdout = {
 		write: spy(),
 		columns: 100
 	};
 
-	const Dynamic = ({ items }) => (
+	const Dynamic = ({items}) => (
 		<Static>
 			{items.map(item => (
 				<Box key={item}>{item}</Box>
@@ -207,54 +207,54 @@ test("skip previous output when rendering new static output", t => {
 		</Static>
 	);
 
-	const { rerender } = render(<Dynamic items={["A"]} />, {
+	const {rerender} = render(<Dynamic items={['A']} />, {
 		stdout,
 		debug: true,
 		experimental: isExperimental
 	});
 
-	t.is(stdout.write.lastCall.args[0], "A\n");
+	t.is(stdout.write.lastCall.args[0], 'A\n');
 
-	rerender(<Dynamic items={["A", "B"]} />);
-	t.is(stdout.write.lastCall.args[0], "A\nB\n");
+	rerender(<Dynamic items={['A', 'B']} />);
+	t.is(stdout.write.lastCall.args[0], 'A\nB\n');
 });
 
 // See https://github.com/chalk/wrap-ansi/issues/27
-test("ensure wrap-ansi doesn't trim leading whitespace", t => {
-	const output = renderToString(<Color red>{" ERROR "}</Color>);
+test('ensure wrap-ansi doesn\'t trim leading whitespace', t => {
+	const output = renderToString(<Color red>{' ERROR '}</Color>);
 
-	t.is(output, chalk.red(" ERROR "));
+	t.is(output, chalk.red(' ERROR '));
 });
 
-test("ensure Color doesn't throw on empty children", t => {
+test('ensure Color doesn\'t throw on empty children', t => {
 	const output = renderToString(<Color />);
-	t.is(output, "");
+	t.is(output, '');
 });
 
-test("replace child node with text", t => {
+test('replace child node with text', t => {
 	const stdout = {
 		write: spy(),
 		columns: 100
 	};
 
-	const Dynamic = ({ replace }) => (
-		<Box>{replace ? "x" : <Color green>test</Color>}</Box>
+	const Dynamic = ({replace}) => (
+		<Box>{replace ? 'x' : <Color green>test</Color>}</Box>
 	);
 
-	const { rerender } = render(<Dynamic />, {
+	const {rerender} = render(<Dynamic />, {
 		stdout,
 		debug: true,
 		experimental: isExperimental
 	});
 
-	t.is(stdout.write.lastCall.args[0], chalk.green("test"));
+	t.is(stdout.write.lastCall.args[0], chalk.green('test'));
 
 	rerender(<Dynamic replace />);
-	t.is(stdout.write.lastCall.args[0], "x");
+	t.is(stdout.write.lastCall.args[0], 'x');
 });
 
 // See https://github.com/vadimdemedes/ink/issues/145
-test("disable raw mode when all input components are unmounted", t => {
+test('disable raw mode when all input components are unmounted', t => {
 	const stdout = {
 		write: spy(),
 		columns: 100
@@ -288,9 +288,9 @@ test("disable raw mode when all input components are unmounted", t => {
 		}
 	}
 
-	const Test = ({ renderFirstInput, renderSecondInput }) => (
+	const Test = ({renderFirstInput, renderSecondInput}) => (
 		<StdinContext.Consumer>
-			{({ setRawMode }) => (
+			{({setRawMode}) => (
 				<>
 					{renderFirstInput && <Input setRawMode={setRawMode} />}
 					{renderSecondInput && <Input setRawMode={setRawMode} />}
@@ -299,7 +299,7 @@ test("disable raw mode when all input components are unmounted", t => {
 		</StdinContext.Consumer>
 	);
 
-	const { rerender } = render(
+	const {rerender} = render(
 		<Test renderFirstInput renderSecondInput />,
 		options
 	);
@@ -323,7 +323,7 @@ test("disable raw mode when all input components are unmounted", t => {
 	t.true(stdin.pause.calledOnce);
 });
 
-test("setRawMode() should throw if raw mode is not supported", t => {
+test('setRawMode() should throw if raw mode is not supported', t => {
 	const stdout = {
 		write: spy(),
 		columns: 100
@@ -370,11 +370,11 @@ test("setRawMode() should throw if raw mode is not supported", t => {
 
 	const Test = () => (
 		<StdinContext.Consumer>
-			{({ setRawMode }) => <Input setRawMode={setRawMode} />}
+			{({setRawMode}) => <Input setRawMode={setRawMode} />}
 		</StdinContext.Consumer>
 	);
 
-	const { unmount } = render(<Test />, options);
+	const {unmount} = render(<Test />, options);
 	unmount();
 
 	t.is(didCatchInMount.callCount, 1);
@@ -384,7 +384,7 @@ test("setRawMode() should throw if raw mode is not supported", t => {
 	t.false(stdin.pause.called);
 });
 
-test("render different component based on whether stdin is a TTY or not", t => {
+test('render different component based on whether stdin is a TTY or not', t => {
 	const stdout = {
 		write: spy(),
 		columns: 100
@@ -418,9 +418,9 @@ test("render different component based on whether stdin is a TTY or not", t => {
 		}
 	}
 
-	const Test = ({ renderFirstInput, renderSecondInput }) => (
+	const Test = ({renderFirstInput, renderSecondInput}) => (
 		<StdinContext.Consumer>
-			{({ isRawModeSupported, setRawMode }) => (
+			{({isRawModeSupported, setRawMode}) => (
 				<>
 					{isRawModeSupported && renderFirstInput && (
 						<Input setRawMode={setRawMode} />
@@ -433,7 +433,7 @@ test("render different component based on whether stdin is a TTY or not", t => {
 		</StdinContext.Consumer>
 	);
 
-	const { rerender } = render(
+	const {rerender} = render(
 		<Test renderFirstInput renderSecondInput />,
 		options
 	);
@@ -455,24 +455,24 @@ test("render different component based on whether stdin is a TTY or not", t => {
 	t.false(stdin.pause.called);
 });
 
-test("render only last frame when run in CI", async t => {
-	const output = await run("ci", {
-		env: { CI: true }
+test('render only last frame when run in CI', async t => {
+	const output = await run('ci', {
+		env: {CI: true}
 	});
 
 	t.is(
 		stripAnsi(output),
-		["#1", "#2", "#3", "#4", "#5", "Counter: 5"].join("\r\n") + "\r\n"
+		['#1', '#2', '#3', '#4', '#5', 'Counter: 5'].join('\r\n') + '\r\n'
 	);
 });
 
-test("reset prop when it's removed from the element", t => {
+test('reset prop when it\'s removed from the element', t => {
 	const stdout = {
 		write: spy(),
 		columns: 100
 	};
 
-	const Dynamic = ({ remove }) => (
+	const Dynamic = ({remove}) => (
 		<Box
 			flexDirection="column"
 			justifyContent="flex-end"
@@ -482,14 +482,14 @@ test("reset prop when it's removed from the element", t => {
 		</Box>
 	);
 
-	const { rerender } = render(<Dynamic />, {
+	const {rerender} = render(<Dynamic />, {
 		stdout,
 		debug: true,
 		experimental: isExperimental
 	});
 
-	t.is(stdout.write.lastCall.args[0], "\n\n\nx");
+	t.is(stdout.write.lastCall.args[0], '\n\n\nx');
 
 	rerender(<Dynamic remove />);
-	t.is(stdout.write.lastCall.args[0], "x");
+	t.is(stdout.write.lastCall.args[0], 'x');
 });

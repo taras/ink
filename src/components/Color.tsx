@@ -1,25 +1,25 @@
-import React, { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
-import arrify from "arrify";
-import chalk from "chalk";
+import React, {FC, ReactNode} from 'react';
+import PropTypes from 'prop-types';
+import arrify from 'arrify';
+import chalk from 'chalk';
 
 const methods = [
-	"hex",
-	"hsl",
-	"hsv",
-	"hwb",
-	"rgb",
-	"keyword",
-	"bgHex",
-	"bgHsl",
-	"bgHsv",
-	"bgHwb",
-	"bgRgb",
-	"bgKeyword"
+	'hex',
+	'hsl',
+	'hsv',
+	'hwb',
+	'rgb',
+	'keyword',
+	'bgHex',
+	'bgHsl',
+	'bgHsv',
+	'bgHwb',
+	'bgRgb',
+	'bgKeyword'
 ];
 
-const Color: FC<ColorProps & { children: ReactNode }> = ({ children, ...colorProps }) => {
-	if (children === "") {
+const Color: FC<ColorProps & { children: ReactNode }> = ({children, ...colorProps}) => {
+	if (children === '') {
 		return null;
 	}
 
@@ -32,7 +32,7 @@ const Color: FC<ColorProps & { children: ReactNode }> = ({ children, ...colorPro
 					// @ts-ignore
 					children = chalk[method](...arrify(colorProps[method]))(children);
 					// @ts-ignore
-				} else if (typeof chalk[method] === "function") {
+				} else if (typeof chalk[method] === 'function') {
 					// @ts-ignore
 					children = chalk[method](children);
 				}
@@ -44,7 +44,7 @@ const Color: FC<ColorProps & { children: ReactNode }> = ({ children, ...colorPro
 
 	return (
 		<span
-			style={{ flexDirection: "row" }}
+			style={{flexDirection: 'row'}}
 			// @ts-ignore
 			unstable__transformChildren={transformChildren}
 		>
@@ -58,7 +58,7 @@ Color.propTypes = {
 };
 
 Color.defaultProps = {
-	children: ""
+	children: ''
 };
 
 export default Color;

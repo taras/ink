@@ -1,5 +1,5 @@
-import Yoga from "yoga-layout-prebuilt";
-import { Styles, FlexStyles, PaddingStyles, DimensionStyles } from "./styles";
+import Yoga from 'yoga-layout-prebuilt';
+import {Styles, FlexStyles, PaddingStyles, DimensionStyles} from './styles';
 
 const applyMarginStyles = (node: Yoga.YogaNode, style: Styles) => {
 	if (style.margin) {
@@ -84,19 +84,19 @@ const applyFlexStyles = (node: Yoga.YogaNode, style: FlexStyles) => {
 	}
 
 	if (style.flexDirection) {
-		if (style.flexDirection === "row") {
+		if (style.flexDirection === 'row') {
 			node.setFlexDirection(Yoga.FLEX_DIRECTION_ROW);
 		}
 
-		if (style.flexDirection === "row-reverse") {
+		if (style.flexDirection === 'row-reverse') {
 			node.setFlexDirection(Yoga.FLEX_DIRECTION_ROW_REVERSE);
 		}
 
-		if (style.flexDirection === "column") {
+		if (style.flexDirection === 'column') {
 			node.setFlexDirection(Yoga.FLEX_DIRECTION_COLUMN);
 		}
 
-		if (style.flexDirection === "column-reverse") {
+		if (style.flexDirection === 'column-reverse') {
 			node.setFlexDirection(Yoga.FLEX_DIRECTION_COLUMN_REVERSE);
 		}
 	}
@@ -106,37 +106,37 @@ const applyFlexStyles = (node: Yoga.YogaNode, style: FlexStyles) => {
 	}
 
 	if (style.alignItems) {
-		if (style.alignItems === "flex-start") {
+		if (style.alignItems === 'flex-start') {
 			node.setAlignItems(Yoga.ALIGN_FLEX_START);
 		}
 
-		if (style.alignItems === "center") {
+		if (style.alignItems === 'center') {
 			node.setAlignItems(Yoga.ALIGN_CENTER);
 		}
 
-		if (style.alignItems === "flex-end") {
+		if (style.alignItems === 'flex-end') {
 			node.setAlignItems(Yoga.ALIGN_FLEX_END);
 		}
 	}
 
 	if (style.justifyContent) {
-		if (style.justifyContent === "flex-start") {
+		if (style.justifyContent === 'flex-start') {
 			node.setJustifyContent(Yoga.JUSTIFY_FLEX_START);
 		}
 
-		if (style.justifyContent === "center") {
+		if (style.justifyContent === 'center') {
 			node.setJustifyContent(Yoga.JUSTIFY_CENTER);
 		}
 
-		if (style.justifyContent === "flex-end") {
+		if (style.justifyContent === 'flex-end') {
 			node.setJustifyContent(Yoga.JUSTIFY_FLEX_END);
 		}
 
-		if (style.justifyContent === "space-between") {
+		if (style.justifyContent === 'space-between') {
 			node.setJustifyContent(Yoga.JUSTIFY_SPACE_BETWEEN);
 		}
 
-		if (style.justifyContent === "space-around") {
+		if (style.justifyContent === 'space-around') {
 			node.setJustifyContent(Yoga.JUSTIFY_SPACE_AROUND);
 		}
 	}

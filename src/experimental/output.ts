@@ -1,6 +1,6 @@
-import sliceAnsi from "slice-ansi";
-import stringLength from "string-length";
-import { OutputWriter, OutputWriteOptions, OutputTransformer } from "../render-node-to-output";
+import sliceAnsi from 'slice-ansi';
+import stringLength from 'string-length';
+import {OutputWriter, OutputWriteOptions, OutputTransformer} from '../render-node-to-output';
 
 /**
  * "Virtual" output class
@@ -31,32 +31,32 @@ export default class Output implements OutputWriter {
 	writes: Writes[] = [];
 
 	constructor(options: OutputConstructorOptions) {
-		const { width, height } = options;
+		const {width, height} = options;
 
 		this.width = width;
 		this.height = height;
 	}
 
 	write(x: number, y: number, text: string, options: OutputWriteOptions) {
-		const { transformers } = options;
+		const {transformers} = options;
 
 		if (!text) {
 			return;
 		}
 
-		this.writes.push({ x, y, text, transformers });
+		this.writes.push({x, y, text, transformers});
 	}
 
 	get() {
 		const output: string[] = [];
 
 		for (let y = 0; y < this.height; y++) {
-			output.push(" ".repeat(this.width));
+			output.push(' '.repeat(this.width));
 		}
 
 		for (const write of this.writes) {
-			const { x, y, text, transformers } = write;
-			const lines = text.split("\n");
+			const {x, y, text, transformers} = write;
+			const lines = text.split('\n');
 			let offsetY = 0;
 
 			for (let line of lines) {
@@ -82,7 +82,7 @@ export default class Output implements OutputWriter {
 			}
 		}
 
-		const generatedOutput = output.map(line => line.trimRight()).join("\n");
+		const generatedOutput = output.map(line => line.trimRight()).join('\n');
 
 		return {
 			output: generatedOutput,

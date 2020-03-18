@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
-import React, { PureComponent, HTMLAttributes } from "react";
-import PropTypes from "prop-types";
-import { YogaNode } from "yoga-layout-prebuilt";
+import React, {PureComponent, HTMLAttributes} from 'react';
+import PropTypes from 'prop-types';
+import {YogaNode} from 'yoga-layout-prebuilt';
 
 interface BoxProps {
 	readonly width?: number | string;
@@ -24,21 +24,21 @@ interface BoxProps {
 	readonly margin?: number;
 	readonly flexGrow?: number;
 	readonly flexShrink?: number;
-	readonly flexDirection?: "row" | "row-reverse" | "column" | "column-reverse";
+	readonly flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
 	readonly flexBasis?: string | number;
-	readonly alignItems?: "flex-start" | "center" | "flex-end";
+	readonly alignItems?: 'flex-start' | 'center' | 'flex-end';
 	readonly justifyContent?:
-		| "flex-start"
-		| "center"
-		| "flex-end"
-		| "space-between"
-		| "space-around";
+	| 'flex-start'
+	| 'center'
+	| 'flex-end'
+	| 'space-between'
+	| 'space-around';
 	readonly textWrap?:
-		| "wrap"
-		| "truncate"
-		| "truncate-start"
-		| "truncate-middle"
-		| "truncate-end";
+	| 'wrap'
+	| 'truncate'
+	| 'truncate-start'
+	| 'truncate-middle'
+	| 'truncate-end';
 	readonly unstable__transformChildren?: (x: any) => any;
 }
 
@@ -65,38 +65,38 @@ export default class Box extends PureComponent<BoxProps> {
 		flexGrow: PropTypes.number,
 		flexShrink: PropTypes.number,
 		flexDirection: PropTypes.oneOf([
-			"row",
-			"row-reverse",
-			"column",
-			"column-reverse"
+			'row',
+			'row-reverse',
+			'column',
+			'column-reverse'
 		]),
 		flexBasis: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 		alignItems: PropTypes.oneOf([
-			"stretch",
-			"flex-start",
-			"center",
-			"flex-end"
+			'stretch',
+			'flex-start',
+			'center',
+			'flex-end'
 		]),
 		justifyContent: PropTypes.oneOf([
-			"flex-start",
-			"center",
-			"flex-end",
-			"space-between",
-			"space-around"
+			'flex-start',
+			'center',
+			'flex-end',
+			'space-between',
+			'space-around'
 		]),
 		textWrap: PropTypes.oneOf([
-			"wrap",
-			"truncate",
-			"truncate-start",
-			"truncate-middle",
-			"truncate-end"
+			'wrap',
+			'truncate',
+			'truncate-start',
+			'truncate-middle',
+			'truncate-end'
 		]),
 		unstable__transformChildren: PropTypes.func,
 		children: PropTypes.node
 	};
 
 	static defaultProps = {
-		flexDirection: "row",
+		flexDirection: 'row',
 		flexGrow: 0,
 		flexShrink: 1
 	};
@@ -104,7 +104,7 @@ export default class Box extends PureComponent<BoxProps> {
 	nodeRef = React.createRef<{ yogaNode: YogaNode } & HTMLDivElement>();
 
 	render() {
-		const { children, unstable__transformChildren, ...style } = this.props;
+		const {children, unstable__transformChildren, ...style} = this.props;
 
 		return (
 			<div

@@ -1,8 +1,8 @@
-import Yoga from "yoga-layout-prebuilt";
-import renderNodeToOutput from "../render-node-to-output";
-import calculateWrappedText from "../calculate-wrapped-text";
-import Output from "./output";
-import { setStyle, ExperimentalDOMNode } from "./dom";
+import Yoga from 'yoga-layout-prebuilt';
+import renderNodeToOutput from '../render-node-to-output';
+import calculateWrappedText from '../calculate-wrapped-text';
+import Output from './output';
+import {setStyle, ExperimentalDOMNode} from './dom';
 
 // Since <Static> components can be placed anywhere in the tree, this helper finds and returns them
 const findStaticNode = (node: ExperimentalDOMNode): ExperimentalDOMNode => {
@@ -24,7 +24,7 @@ const findStaticNode = (node: ExperimentalDOMNode): ExperimentalDOMNode => {
 	}
 };
 
-export default ({ terminalWidth = 100 }) => {
+export default ({terminalWidth = 100}) => {
 	return (node: ExperimentalDOMNode) => {
 		setStyle(node, {
 			width: terminalWidth
@@ -39,7 +39,7 @@ export default ({ terminalWidth = 100 }) => {
 			height: node.yogaNode.getComputedHeight()
 		});
 
-		renderNodeToOutput(node, output, { skipStaticElements: true });
+		renderNodeToOutput(node, output, {skipStaticElements: true});
 
 		const staticNode = findStaticNode(node);
 		let staticOutput;
@@ -55,7 +55,7 @@ export default ({ terminalWidth = 100 }) => {
 			});
 		}
 
-		const { output: generatedOutput, height: outputHeight } = output.get();
+		const {output: generatedOutput, height: outputHeight} = output.get();
 
 		return {
 			output: generatedOutput,

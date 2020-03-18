@@ -1,6 +1,6 @@
-import stringLength from "string-length";
-import sliceAnsi from "slice-ansi";
-import { OutputWriteOptions, OutputWriter } from "./render-node-to-output";
+import stringLength from 'string-length';
+import sliceAnsi from 'slice-ansi';
+import {OutputWriteOptions, OutputWriter} from './render-node-to-output';
 
 interface OutputConstructorOptions {
 	width: number;
@@ -19,25 +19,25 @@ export default class Output implements OutputWriter {
 	output: string[];
 
 	constructor(options: OutputConstructorOptions) {
-		const { width, height } = options;
+		const {width, height} = options;
 		// Initialize output array with a specific set of rows, so that margin/padding at the bottom is preserved
 		const output = [];
 
 		for (let y = 0; y < height; y++) {
-			output.push(" ".repeat(width));
+			output.push(' '.repeat(width));
 		}
 
 		this.output = output;
 	}
 
 	write(x: number, y: number, text: string, options: OutputWriteOptions) {
-		const { transformers } = options;
+		const {transformers} = options;
 
 		if (!text) {
 			return;
 		}
 
-		const lines = text.split("\n");
+		const lines = text.split('\n');
 		let offsetY = 0;
 
 		for (let line of lines) {
@@ -63,7 +63,7 @@ export default class Output implements OutputWriter {
 	}
 
 	get() {
-		return this.output.map(line => line.trimRight()).join("\n");
+		return this.output.map(line => line.trimRight()).join('\n');
 	}
 
 	getHeight() {

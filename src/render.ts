@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
-import { Ink, createInk, InkOptions } from "./ink";
-import { createExperimentalInk } from "./experimental/createExperimentalInk";
-import instances from "./instances";
-import { ExperimentalDOMNode } from "./experimental/dom";
-import { DOMNode } from "./dom";
-import { Stream } from 'stream';
+import {ReactNode} from 'react';
+import {Ink, createInk, InkOptions} from './ink';
+import {createExperimentalInk} from './experimental/createExperimentalInk';
+import instances from './instances';
+import {ExperimentalDOMNode} from './experimental/dom';
+import {DOMNode} from './dom';
+import {Stream} from 'stream';
 
 export interface RenderOptions {
 	stdout?: NodeJS.WriteStream;
@@ -15,17 +15,17 @@ export interface RenderOptions {
 }
 
 interface InkControls<T> {
-	rerender?: Ink<T>["render"];
-	unmount?: Ink<T>["unmount"];
-	waitUntilExit?: Ink<T>["waitUntilExit"];
+	rerender?: Ink<T>['render'];
+	unmount?: Ink<T>['unmount'];
+	waitUntilExit?: Ink<T>['waitUntilExit'];
 	cleanup?: () => void;
 }
 
-type RenderFunction = <T extends NodeJS.WriteStream | RenderOptions = {}>(
+type RenderFunction = <T extends NodeJS.WriteStream | RenderOptions = Record<string, unknown>>(
 	node: ReactNode,
 	options?: T
 ) => InkControls<
-	T extends { experimental: true } ? ExperimentalDOMNode : DOMNode
+T extends { experimental: true } ? ExperimentalDOMNode : DOMNode
 >;
 
 const render: RenderFunction = (
@@ -45,7 +45,7 @@ const render: RenderFunction = (
 		...streamToOptions(options)
 	};
 
-	const { stdout } = inkOptions;
+	const {stdout} = inkOptions;
 
 	let instance: Ink<DOMNode | ExperimentalDOMNode>;
 	if (defaults.experimental) {
@@ -74,9 +74,9 @@ function streamToOptions(stdout: NodeJS.WriteStream | RenderOptions): RenderOpti
 			stdout,
 			stdin: process.stdin
 		};
-	} else {
-		return stdout;
 	}
+
+	return stdout;
 }
 
 function retrieveCachedInstance<T>(
@@ -90,6 +90,7 @@ function retrieveCachedInstance<T>(
 		instance = createInstance();
 		instances.set(stdout, instance);
 	}
+
 	return instance;
 }
 

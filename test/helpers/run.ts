@@ -1,12 +1,12 @@
-import { spawn } from "node-pty";
+import {spawn} from 'node-pty';
 
-const run: (fixture: string, props?: { env?: {} }) => Promise<any> = (
+const run: (fixture: string, props?: { env?: Record<string, unknown> }) => Promise<any> = (
 	fixture,
-	{ env } = {}
+	{env} = {}
 ) => {
 	return new Promise((resolve, reject) => {
-		const term = spawn("ts-node", [`${__dirname}/../fixtures/${fixture}.tsx`], {
-			name: "xterm-color",
+		const term = spawn('ts-node', [`${__dirname}/../fixtures/${fixture}.tsx`], {
+			name: 'xterm-color',
 			cols: 100,
 			cwd: __dirname,
 			env: {
@@ -15,13 +15,13 @@ const run: (fixture: string, props?: { env?: {} }) => Promise<any> = (
 			}
 		});
 
-		let output = "";
+		let output = '';
 
-		term.on("data", data => {
+		term.on('data', data => {
 			output += data;
 		});
 
-		term.on("exit", code => {
+		term.on('exit', code => {
 			if (code === 0) {
 				resolve(output);
 				return;

@@ -1,6 +1,5 @@
-import React from "react";
-import { Box, Text, render } from "../../src";
-
+import React from 'react';
+import {Box, Text, render} from '../../src';
 
 const Erase = () => (
 	<Box flexDirection="column">

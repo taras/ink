@@ -1,5 +1,5 @@
-import React from "react";
-import { render, Box, StdinContext } from "../../src";
+import React from 'react';
+import {render, Box, StdinContext} from '../../src';
 
 class Test extends React.Component<{
 	onSetRawMode: (value: boolean) => void;
@@ -15,12 +15,12 @@ class Test extends React.Component<{
 
 const app = render(
 	<StdinContext.Consumer>
-		{({ setRawMode }) => <Test onSetRawMode={setRawMode} />}
+		{({setRawMode}) => <Test onSetRawMode={setRawMode} />}
 	</StdinContext.Consumer>,
 	{
-		experimental: process.env.EXPERIMENTAL === "true"
+		experimental: process.env.EXPERIMENTAL === 'true'
 	}
 );
 
 setTimeout(() => app.unmount(), 500);
-app.waitUntilExit().then(() => console.log("exited"));
+app.waitUntilExit().then(() => console.log('exited'));
