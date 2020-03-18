@@ -32,7 +32,7 @@ class Test extends React.Component<
 
 const app = render(
 	<AppContext.Consumer>
-		{({exit}) => <Test onExit={exit} />}
+		{({exit}) => <Test onExit={exit}/>}
 	</AppContext.Consumer>,
 	{
 		experimental: process.env.EXPERIMENTAL === 'true'

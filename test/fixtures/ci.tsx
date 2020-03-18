@@ -16,7 +16,7 @@ class Test extends React.Component<Record<string, unknown>, TestState> {
 
 	render() {
 		return (
-			<React.Fragment>
+			<>
 				<Static>
 					{this.state.items.map(item => (
 						<Box key={item}>{item}</Box>
@@ -24,7 +24,7 @@ class Test extends React.Component<Record<string, unknown>, TestState> {
 				</Static>
 
 				<Box>Counter: {this.state.counter}</Box>
-			</React.Fragment>
+			</>
 		);
 	}
 
@@ -50,6 +50,6 @@ class Test extends React.Component<Record<string, unknown>, TestState> {
 	}
 }
 
-render(<Test />, {
+render(<Test/>, {
 	experimental: process.env.EXPERIMENTAL === 'true'
 });

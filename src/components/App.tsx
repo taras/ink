@@ -1,4 +1,4 @@
-import React, {PureComponent, ReactNode} from 'react';
+import React, { PureComponent, ReactNode } from 'react';
 import PropTypes from 'prop-types';
 import cliCursor from 'cli-cursor';
 import AppContext from './AppContext';
@@ -27,85 +27,6 @@ export default class App extends PureComponent<AppProps> {
 	// Count how many components enabled raw mode to avoid disabling
 	// raw mode until all components don't need it anymore
 	rawModeEnabledCount = 0;
-
-	// Determines if TTY is supported on the provided stdin
-	isRawModeSupported() {
-		return this.props.stdin.isTTY;
-	}
-
-	render() {
-		return (
-			<AppContext.Provider
-				value={{
-					exit: this.handleExit
-				}}
-			>
-				<StdinContext.Provider
-					value={{
-						stdin: this.props.stdin,
-						setRawMode: this.handleSetRawMode,
-						isRawModeSupported: this.isRawModeSupported()
-					}}
-				>
-					<StdoutContext.Provider
-						value={{
-							stdout: this.props.stdout
-						}}
-					>
-						{this.props.children}
-					</StdoutContext.Provider>
-				</StdinContext.Provider>
-			</AppContext.Provider>
-		);
-	}
-
-	componentDidMount() {
-		cliCursor.hide(this.props.stdout);
-	}
-
-	componentWillUnmount() {
-		cliCursor.show(this.props.stdout);
-
-		// ignore calling setRawMode on an handle stdin it cannot be called
-		if (this.isRawModeSupported()) {
-			this.handleSetRawMode(false);
-		}
-	}
-
-	componentDidCatch(error: Error) {
-		this.handleExit(error);
-	}
-
-	handleSetRawMode = (isEnabled: boolean) => {
-		const {"\u0003"import React, { PureComponent, ReactNode } from "react";
-import PropTypes from "prop-types";
-import cliCursor from "cli-cursor";
-import AppContext from "./AppContext";
-import StdinContext from "./StdinContext";
-import StdoutContext from "./StdoutContext";
-interface AppProps {
-	children: ReactNode;
-	stdin: NodeJS.ReadStream;
-	stdout: NodeJS.WriteStream;
-	exitOnCtrlC: boolean;
-	onExit: (error?: Error) => void;
-}
-
-// Root component for all Ink apps
-// It renders stdin and stdout contexts, so that children can access them if needed
-// It also handles Ctrl+C exiting and cursor visibility
-export default class App extends PureComponent<AppProps> {
-	static propTypes = {
-		children: PropTypes.node.isRequired,
-		stdin: PropTypes.object.isRequired,
-		stdout: PropTypes.object.isRequired,
-		exitOnCtrlC: PropTypes.bool.isRequired, // eslint-disable-line react/boolean-prop-naming
-		onExit: PropTypes.func.isRequired
-	};
-
-	// Count how many components enabled raw mode to avoid disabling
-	// raw mode until all components don't need it anymore
-	rawModeEnabledCount: number = 0;
 
 	// Determines if TTY is supported on the provided stdin
 	isRawModeSupported() {

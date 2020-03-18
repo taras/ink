@@ -25,7 +25,7 @@ class Test extends React.Component<Record<string, unknown>, { counter: number }>
 	}
 }
 
-const app = render(<Test />, {
+const app = render(<Test/>, {
 	experimental: process.env.EXPERIMENTAL === 'true'
 });
 

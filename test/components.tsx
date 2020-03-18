@@ -39,7 +39,7 @@ test('text with component', t => {
 
 	const output = renderToString(
 		<Box>
-			Hello <World />
+			Hello <World/>
 		</Box>
 	);
 
@@ -173,7 +173,7 @@ test('hooks', t => {
 		return <Box>{value}</Box>;
 	};
 
-	const output = renderToString(<WithHooks />);
+	const output = renderToString(<WithHooks/>);
 	t.is(output, 'Hello');
 });
 
@@ -207,7 +207,7 @@ test('skip previous output when rendering new static output', t => {
 		</Static>
 	);
 
-	const {rerender} = render(<Dynamic items={['A']} />, {
+	const {rerender} = render(<Dynamic items={['A']}/>, {
 		stdout,
 		debug: true,
 		experimental: isExperimental
@@ -215,7 +215,7 @@ test('skip previous output when rendering new static output', t => {
 
 	t.is(stdout.write.lastCall.args[0], 'A\n');
 
-	rerender(<Dynamic items={['A', 'B']} />);
+	rerender(<Dynamic items={['A', 'B']}/>);
 	t.is(stdout.write.lastCall.args[0], 'A\nB\n');
 });
 
@@ -227,7 +227,7 @@ test('ensure wrap-ansi doesn\'t trim leading whitespace', t => {
 });
 
 test('ensure Color doesn\'t throw on empty children', t => {
-	const output = renderToString(<Color />);
+	const output = renderToString(<Color/>);
 	t.is(output, '');
 });
 
@@ -241,7 +241,7 @@ test('replace child node with text', t => {
 		<Box>{replace ? 'x' : <Color green>test</Color>}</Box>
 	);
 
-	const {rerender} = render(<Dynamic />, {
+	const {rerender} = render(<Dynamic/>, {
 		stdout,
 		debug: true,
 		experimental: isExperimental
@@ -249,7 +249,7 @@ test('replace child node with text', t => {
 
 	t.is(stdout.write.lastCall.args[0], chalk.green('test'));
 
-	rerender(<Dynamic replace />);
+	rerender(<Dynamic replace/>);
 	t.is(stdout.write.lastCall.args[0], 'x');
 });
 
@@ -292,15 +292,15 @@ test('disable raw mode when all input components are unmounted', t => {
 		<StdinContext.Consumer>
 			{({setRawMode}) => (
 				<>
-					{renderFirstInput && <Input setRawMode={setRawMode} />}
-					{renderSecondInput && <Input setRawMode={setRawMode} />}
+					{renderFirstInput && <Input setRawMode={setRawMode}/>}
+					{renderSecondInput && <Input setRawMode={setRawMode}/>}
 				</>
 			)}
 		</StdinContext.Consumer>
 	);
 
 	const {rerender} = render(
-		<Test renderFirstInput renderSecondInput />,
+		<Test renderFirstInput renderSecondInput/>,
 		options
 	);
 
@@ -309,13 +309,13 @@ test('disable raw mode when all input components are unmounted', t => {
 	t.true(stdin.resume.calledOnce);
 	t.false(stdin.pause.called);
 
-	rerender(<Test renderFirstInput />);
+	rerender(<Test renderFirstInput/>);
 
 	t.true(stdin.setRawMode.calledOnce);
 	t.true(stdin.resume.calledOnce);
 	t.false(stdin.pause.called);
 
-	rerender(<Test />);
+	rerender(<Test/>);
 
 	t.true(stdin.setRawMode.calledTwice);
 	t.deepEqual(stdin.setRawMode.lastCall.args, [false]);
@@ -370,11 +370,11 @@ test('setRawMode() should throw if raw mode is not supported', t => {
 
 	const Test = () => (
 		<StdinContext.Consumer>
-			{({setRawMode}) => <Input setRawMode={setRawMode} />}
+			{({setRawMode}) => <Input setRawMode={setRawMode}/>}
 		</StdinContext.Consumer>
 	);
 
-	const {unmount} = render(<Test />, options);
+	const {unmount} = render(<Test/>, options);
 	unmount();
 
 	t.is(didCatchInMount.callCount, 1);
@@ -423,10 +423,10 @@ test('render different component based on whether stdin is a TTY or not', t => {
 			{({isRawModeSupported, setRawMode}) => (
 				<>
 					{isRawModeSupported && renderFirstInput && (
-						<Input setRawMode={setRawMode} />
+						<Input setRawMode={setRawMode}/>
 					)}
 					{isRawModeSupported && renderSecondInput && (
-						<Input setRawMode={setRawMode} />
+						<Input setRawMode={setRawMode}/>
 					)}
 				</>
 			)}
@@ -434,7 +434,7 @@ test('render different component based on whether stdin is a TTY or not', t => {
 	);
 
 	const {rerender} = render(
-		<Test renderFirstInput renderSecondInput />,
+		<Test renderFirstInput renderSecondInput/>,
 		options
 	);
 
@@ -442,13 +442,13 @@ test('render different component based on whether stdin is a TTY or not', t => {
 	t.false(stdin.resume.called);
 	t.false(stdin.pause.called);
 
-	rerender(<Test renderFirstInput />);
+	rerender(<Test renderFirstInput/>);
 
 	t.false(stdin.setRawMode.called);
 	t.false(stdin.resume.called);
 	t.false(stdin.pause.called);
 
-	rerender(<Test />);
+	rerender(<Test/>);
 
 	t.false(stdin.setRawMode.called);
 	t.false(stdin.resume.called);
@@ -482,7 +482,7 @@ test('reset prop when it\'s removed from the element', t => {
 		</Box>
 	);
 
-	const {rerender} = render(<Dynamic />, {
+	const {rerender} = render(<Dynamic/>, {
 		stdout,
 		debug: true,
 		experimental: isExperimental
@@ -490,6 +490,6 @@ test('reset prop when it\'s removed from the element', t => {
 
 	t.is(stdout.write.lastCall.args[0], '\n\n\nx');
 
-	rerender(<Dynamic remove />);
+	rerender(<Dynamic remove/>);
 	t.is(stdout.write.lastCall.args[0], 'x');
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import {Static, Box, Text, render} from '../../src';
 
 const EraseWithStatic = () => (
-	<React.Fragment>
+	<>
 		<Static>
 			<Text key="a">A</Text>
 			<Text key="b">B</Text>
@@ -14,8 +14,8 @@ const EraseWithStatic = () => (
 			<Text>E</Text>
 			<Text>F</Text>
 		</Box>
-	</React.Fragment>
+	</>
 );
 
 process.stdout.rows = Number(process.argv[3]);
-render(<EraseWithStatic />, {experimental: true});
+render(<EraseWithStatic/>, {experimental: true});

@@ -56,7 +56,7 @@ const UserInput: (props: { test: string }) => JSX.Element = ({test}) => {
 	return null;
 };
 
-const app = render(<UserInput test={process.argv[2]} />);
+const app = render(<UserInput test={process.argv[2]}/>);
 
 (async () => {
 	await app.waitUntilExit();

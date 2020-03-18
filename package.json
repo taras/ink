@@ -139,6 +139,7 @@
 	},
 	"xo": {
 		"extends": [
+			"xo-react",
 			"xo-typescript"
 		],
 		"parserOptions": {
@@ -147,6 +148,9 @@
 				"test/tsconfig.json"
 			]
 		},
+		"plugins": [
+			"react"
+		],
 		"extensions": [
 			"ts",
 			"tsx"
@@ -159,12 +163,14 @@
 		"overrides": [
 			{
 				"files": [
-					"src/components/*.tsx",
-					"src/hooks/*.ts"
+					"src/**/*.{ts,tsx}",
+					"test/**/*.{ts,tsx}"
 				],
 				"rules": {
 					"unicorn/filename-case": "off",
-					"react/require-default-props": "warn"
+					"react/require-default-props": "warn",
+					"@typescript-eslint/explicit-function-return": "off",
+					"@typescript-eslint/explicit-function-return-type": "off"
 				}
 			}
 		]
