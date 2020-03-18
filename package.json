@@ -168,7 +168,9 @@
 				],
 				"rules": {
 					"unicorn/filename-case": "off",
+					"react/prop-types": "warn",
 					"react/require-default-props": "warn",
+					"@typescript-eslint/no-empty-function": "warn",
 					"@typescript-eslint/explicit-function-return": "off",
 					"@typescript-eslint/explicit-function-return-type": "off"
 				}

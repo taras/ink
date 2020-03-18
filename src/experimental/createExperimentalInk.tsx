@@ -19,7 +19,7 @@ export function createExperimentalInk(options: InkOptions): Ink<ExperimentalDOMN
 		throttle(log, undefined, {
 			leading: true,
 			trailing: true
-		  });
+		});
 
 	const renderer = createExperimentalRenderer({
 		terminalWidth: options.stdout.columns

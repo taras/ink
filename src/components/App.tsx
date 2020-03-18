@@ -1,9 +1,9 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, {PureComponent, ReactNode} from 'react';
 import PropTypes from 'prop-types';
 import cliCursor from 'cli-cursor';
 import AppContext from './AppContext';
-import StdinContext from './StdinContext';
-import StdoutContext from './StdoutContext';
+import {StdinContext} from './StdinContext';
+import {StdoutContext} from './StdoutContext';
 interface AppProps {
 	children: ReactNode;
 	stdin: NodeJS.ReadStream;
@@ -77,7 +77,7 @@ export default class App extends PureComponent<AppProps> {
 	}
 
 	handleSetRawMode = (isEnabled: boolean) => {
-		const { stdin} = this.props;
+		const {stdin} = this.props;
 
 		if (!this.isRawModeSupported()) {
 			if (stdin === process.stdin) {
@@ -115,8 +115,8 @@ export default class App extends PureComponent<AppProps> {
 
 	handleInput = (input: string) => {
 		// Exit on Ctrl+C
+		// eslint-disable-line unicorn/no-hex-escape
 		if (input === '\x03' && this.props.exitOnCtrlC) {
-			// eslint-disable-line unicorn/no-hex-escape
 			this.handleExit();
 		}
 	};

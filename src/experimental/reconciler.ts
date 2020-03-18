@@ -66,9 +66,9 @@ const hostConfig: HostConfig<NodeNames, Props, ExperimentalDOMNode, any, any, an
 			} else if (key === 'style') {
 				setStyle(node, value);
 			} else if (key === 'unstable__transformChildren') {
-				node.unstable__transformChildren = value; // eslint-disable-line camelcase
+				node.unstable__transformChildren = value;
 			} else if (key === 'unstable__static') {
-				node.unstable__static = true; // eslint-disable-line camelcase
+				node.unstable__static = true;
 			} else {
 				setAttribute(node, key, value);
 			}
@@ -133,9 +133,9 @@ const hostConfig: HostConfig<NodeNames, Props, ExperimentalDOMNode, any, any, an
 			} else if (key === 'style') {
 				setStyle(node, value);
 			} else if (key === 'unstable__transformChildren') {
-				node.unstable__transformChildren = value; // eslint-disable-line camelcase
+				node.unstable__transformChildren = value;
 			} else if (key === 'unstable__static') {
-				node.unstable__static = true; // eslint-disable-line camelcase
+				node.unstable__static = true;
 			} else {
 				setAttribute(node, key, value);
 			}

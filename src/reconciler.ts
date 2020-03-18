@@ -57,9 +57,9 @@ const hostConfig: HostConfig<NodeNames, Props, DOMNode, any, any, any, any, any,
 			} else if (key === 'style') {
 				node.style = value;
 			} else if (key === 'unstable__transformChildren') {
-				node.unstable__transformChildren = value; // eslint-disable-line camelcase
+				node.unstable__transformChildren = value;
 			} else if (key === 'unstable__static') {
-				node.unstable__static = true; // eslint-disable-line camelcase
+				node.unstable__static = true;
 			} else {
 				setAttribute(node, key, value);
 			}
@@ -113,9 +113,9 @@ const hostConfig: HostConfig<NodeNames, Props, DOMNode, any, any, any, any, any,
 			} else if (key === 'style') {
 				node.style = value;
 			} else if (key === 'unstable__transformChildren') {
-				node.unstable__transformChildren = value; // eslint-disable-line camelcase
+				node.unstable__transformChildren = value;
 			} else if (key === 'unstable__static') {
-				node.unstable__static = true; // eslint-disable-line camelcase
+				node.unstable__static = true;
 			} else {
 				setAttribute(node, key, value);
 			}
@@ -131,4 +131,4 @@ const hostConfig: HostConfig<NodeNames, Props, DOMNode, any, any, any, any, any,
 	removeChild: removeChildNode
 };
 
-export default ReactReconciler(hostConfig); // eslint-disable-line new-cap
+export default ReactReconciler(hostConfig);
