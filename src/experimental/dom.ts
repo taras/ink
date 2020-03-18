@@ -1,4 +1,3 @@
-import {ReactNode} from 'react';
 import Yoga from 'yoga-layout-prebuilt';
 import measureText from '../measure-text';
 import applyStyle from './apply-style';

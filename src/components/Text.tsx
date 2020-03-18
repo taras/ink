@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React, {FC, ReactNode} from 'react';
 import PropTypes from 'prop-types';
 import chalk from 'chalk';

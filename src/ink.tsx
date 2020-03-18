@@ -48,7 +48,7 @@ export function createInk(options: InkOptions): Ink<DOMNode> {
 		throttle(log, undefined, {
 			leading: true,
 			trailing: true
-		  });
+		});
 
 	let resolveExitPromise: Ink<DOMNode>['resolveExitPromise'];
 	let rejectExitPromise: Ink<DOMNode>['rejectExitPromise'];
@@ -62,7 +62,7 @@ export function createInk(options: InkOptions): Ink<DOMNode> {
 			return;
 		}
 
-		const {output, outputHeight, staticOutput} = renderer(rootNode);
+		const {output, staticOutput} = renderer(rootNode);
 
 		// If <Static> output isn't empty, it means new children have been added to it
 		const hasStaticOutput = staticOutput && staticOutput !== '\n';

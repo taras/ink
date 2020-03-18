@@ -1,7 +1,7 @@
 import {serial as test} from 'ava';
 import {spawn} from 'node-pty';
 
-const term = (fixture: string, args = []) => {
+const term = (fixture: string, args: string[] = []) => {
 	let resolve: (value?: any) => void;
 	let reject: (error?: Error) => void;
 
@@ -19,7 +19,7 @@ const term = (fixture: string, args = []) => {
 	});
 
 	const result = {
-		write: input => ps.write(input),
+		write: (input: string) => ps.write(input),
 		output: '',
 		waitForExit: () => exitPromise
 	};

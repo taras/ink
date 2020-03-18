@@ -1,5 +1,4 @@
 import Yoga from 'yoga-layout-prebuilt';
-import {ReactNode} from 'react';
 import {Styles} from './styles';
 import {OutputTransformer} from './render-node-to-output';
 export type NodeNames = 'root' | 'div' | 'span';
