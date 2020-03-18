@@ -10,6 +10,7 @@
 		"url": "github.com/vadimdemedes"
 	},
 	"main": "build",
+	"types": "build/index.d.ts",
 	"engines": {
 		"node": ">=10"
 	},
@@ -24,7 +25,8 @@
 		"cast": "svg-term --command='node media/demo.js' --out=media/demo.svg --from=100 --window --width=50 --height=8 --term=iterm2 --profile=Snazzy"
 	},
 	"files": [
-		"build"
+		"build",
+		"src"
 	],
 	"keywords": [
 		"react",
