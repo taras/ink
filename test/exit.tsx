@@ -86,5 +86,5 @@ test.cb("don't exit while raw mode is active", t => {
 		term.kill();
 		t.fail();
 		t.end();
-	}, 3000);
+	}, 5000);
 });
