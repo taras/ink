@@ -1,5 +1,5 @@
 import React from "react";
-import { render, useInput, AppContext } from "../..";
+import { render, useInput, AppContext } from "../../src";
 
 const UserInput: (props: { test: string }) => JSX.Element = ({ test }) => {
 	const { exit } = React.useContext(AppContext);

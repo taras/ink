@@ -1,5 +1,5 @@
 import React from "react";
-import { render, Box, AppContext, StdinContext } from "../..";
+import { render, Box, AppContext, StdinContext } from "../../src";
 
 class Test extends React.Component<{
 	onSetRawMode: (value: boolean) => void;

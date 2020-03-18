@@ -1,5 +1,5 @@
 import React from "react";
-import { render, Box, AppContext } from "../..";
+import { render, Box, AppContext } from "../../src";
 
 class Test extends React.Component<
 	{ onExit: (error: Error) => void },

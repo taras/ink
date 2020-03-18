@@ -1,5 +1,5 @@
 import React from "react";
-import { render, Box } from "../..";
+import { render, Box } from "../../src";
 
 class Test extends React.Component<{}, { counter: number }> {
 	timer: NodeJS.Timeout

@@ -1,5 +1,5 @@
 import React from "react";
-import { render, Static, Box } from "../..";
+import { render, Static, Box } from "../../src";
 
 interface TestState {
 	counter: number;
