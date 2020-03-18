@@ -1,6 +1,6 @@
 import React from 'react';
 
-interface AppContextValue {
+export interface AppContextValue {
 	exit: (error?: number | Error) => void;
 }
 
