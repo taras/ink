@@ -20,7 +20,7 @@
 		"build:types": "tsc --emitDeclarationOnly",
 		"build:js": "babel src --out-dir=build --extensions \".js,.ts,.tsx\" --source-maps inline",
 		"prepare": "npm run build",
-		"test": "xo && FORCE_COLOR=true EXPERIMENTAL=true ava --timeout=10s && FORCE_COLOR=true ava --timeout=10s",
+		"test": "xo && FORCE_COLOR=true EXPERIMENTAL=true ava && FORCE_COLOR=true ava",
 		"cast": "svg-term --command='node media/demo.js' --out=media/demo.svg --from=100 --window --width=50 --height=8 --term=iterm2 --profile=Snazzy"
 	},
 	"files": [
