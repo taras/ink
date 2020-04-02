@@ -1,45 +1,12 @@
 import React, {PureComponent, ReactNode} from 'react';
 import PropTypes from 'prop-types';
 import {YogaNode} from 'yoga-layout-prebuilt';
+import { Styles } from '../styles';
 
-interface BoxProps {
-	readonly width?: number | string;
-	readonly height?: number | string;
-	readonly minWidth?: number;
-	readonly minHeight?: number;
-	readonly paddingTop?: number;
-	readonly paddingBottom?: number;
-	readonly paddingLeft?: number;
-	readonly paddingRight?: number;
-	readonly paddingX?: number;
-	readonly paddingY?: number;
-	readonly padding?: number;
-	readonly marginTop?: number;
-	readonly marginBottom?: number;
-	readonly marginLeft?: number;
-	readonly marginRight?: number;
-	readonly marginX?: number;
-	readonly marginY?: number;
-	readonly margin?: number;
-	readonly flexGrow?: number;
-	readonly flexShrink?: number;
-	readonly flexDirection?: 'row' | 'row-reverse' | 'column' | 'column-reverse';
-	readonly flexBasis?: string | number;
-	readonly alignItems?: 'flex-start' | 'center' | 'flex-end';
-	readonly justifyContent?:
-	| 'flex-start'
-	| 'center'
-	| 'flex-end'
-	| 'space-between'
-	| 'space-around';
-	readonly textWrap?:
-	| 'wrap'
-	| 'truncate'
-	| 'truncate-start'
-	| 'truncate-middle'
-	| 'truncate-end';
-	readonly unstable__transformChildren?: (children: ReactNode) => ReactNode;
-}
+type BoxProps = {
+	name?: string;
+	unstable__transformChildren?: (children: ReactNode) => ReactNode;
+} & Styles
 
 /**
  * `<Box>` it's an essential Ink component to build your layout. It's like a `<div style="display: flex">` in a browser.
@@ -94,7 +61,8 @@ export class Box extends PureComponent<BoxProps> {
 			'truncate-end'
 		]),
 		unstable__transformChildren: PropTypes.func,
-		children: PropTypes.node
+		children: PropTypes.node,
+		name: PropTypes.string
 	};
 
 	static defaultProps = {
@@ -106,7 +74,7 @@ export class Box extends PureComponent<BoxProps> {
 	nodeRef = React.createRef<{ yogaNode: YogaNode } & HTMLDivElement>();
 
 	render() {
-		const {children, unstable__transformChildren, ...style} = this.props;
+		const {children, unstable__transformChildren, name, ...style} = this.props;
 
 		return (
 			<div
@@ -114,6 +82,7 @@ export class Box extends PureComponent<BoxProps> {
 				style={style}
 				// @ts-ignore
 				unstable__transformChildren={unstable__transformChildren}
+				unstable__regionName={name}
 			>
 				{children}
 			</div>

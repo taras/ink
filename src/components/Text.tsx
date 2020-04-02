@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import chalk from 'chalk';
 
 interface TextProps {
-	readonly bold?: boolean;
-	readonly italic?: boolean;
-	readonly underline?: boolean;
-	readonly strikethrough?: boolean;
-	readonly unstable__transformChildren?: (children: ReactNode) => ReactNode;
-	readonly children: ReactNode;
+	bold?: boolean;
+	italic?: boolean;
+	underline?: boolean;
+	strikethrough?: boolean;
+	name?: string;
+	unstable__transformChildren?: (children: ReactNode) => ReactNode;
+	children: ReactNode;
 }
 
 /**
@@ -20,6 +21,7 @@ export const Text: FC<TextProps> = ({
 	underline,
 	strikethrough,
 	children,
+	name,
 	unstable__transformChildren
 }) => {
 	const transformChildren = (children: ReactNode) => {
@@ -49,6 +51,8 @@ export const Text: FC<TextProps> = ({
 	return (
 		<span
 			style={{flexDirection: 'row'}}
+			// @ts-ignore
+			unstable__regionName={name}
 			// @ts-ignore
 			unstable__transformChildren={transformChildren}
 		>

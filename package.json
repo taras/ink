@@ -72,8 +72,10 @@
 	},
 	"devDependencies": {
 		"@sindresorhus/tsconfig": "0.7.0",
+		"@types/balanced-match": "1.0.1",
 		"ava": "^3.5.0",
 		"babel-eslint": "^10.0.1",
+		"balanced-match": "1.0.0",
 		"delay": "^4.1.0",
 		"eslint-config-xo": "0.29.1",
 		"eslint-config-xo-react": "^0.22.0",
@@ -83,6 +85,7 @@
 		"ms": "^2.1.1",
 		"node-pty": "^0.9.0",
 		"p-queue": "^6.2.1",
+		"re-template-tag": "2.0.1",
 		"react": "^16.9.0",
 		"sinon": "^8.1.1",
 		"strip-ansi": "^6.0.0",
@@ -128,7 +131,14 @@
 				],
 				"rules": {
 					"no-unused-expressions": "off",
-					"camelcase": ["error", {"allow": ["^unstable__"]}],
+					"camelcase": [
+						"error",
+						{
+							"allow": [
+								"^unstable__"
+							]
+						}
+					],
 					"unicorn/filename-case": "off",
 					"react/prop-types": "warn",
 					"unicorn/prevent-abbreviations": "off",

@@ -74,6 +74,8 @@ unknown
 				node.style = value;
 			} else if (key === 'unstable__transformChildren') {
 				node.unstable__transformChildren = value;
+			} else if (key === 'unstable__regionName') {
+				node.unstable__regionName = value;
 			} else if (key === 'unstable__static') {
 				node.unstable__static = true;
 			} else {
@@ -128,6 +130,8 @@ unknown
 				}
 			} else if (key === 'style') {
 				node.style = value;
+			} else if (key === 'unstable__regionName') {
+				node.unstable__regionName = value;
 			} else if (key === 'unstable__transformChildren') {
 				node.unstable__transformChildren = value;
 			} else if (key === 'unstable__static') {
