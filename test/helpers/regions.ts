@@ -1,12 +1,12 @@
 // @ts-ignore
-import { re } from "re-template-tag";
-import balancedMatch from "balanced-match";
+import {re} from 're-template-tag';
+import balancedMatch from 'balanced-match';
 
 export const findByName = (selector: string, text: string) => {
 	function findRegions(name: string, text: string) {
 		const found = [];
-		const start = re`/\x1b_${name}\x1b\[/um`;
-		const end = re`/\x1b_\/${name}\x1b\[/um`;
+		const start = re`/\u001B_${name}\u001B\[/um`;
+		const end = re`/\u001B_\/${name}\u001B\[/um`;
 		let item = balancedMatch(start, end, text);
 		while (item) {
 			found.push(item.body);
@@ -15,25 +15,27 @@ export const findByName = (selector: string, text: string) => {
 				text = item.post;
 			}
 		}
+
 		return found;
 	}
 
 	function travel(paths: string[], text: string): string[] {
-		let [current, ...rest] = paths;
+		const [current, ...rest] = paths;
 
-		let found = findRegions(current, text);
+		const found = findRegions(current, text);
 
-		// found regions and there more paths to travel
+		// Found regions and there more paths to travel
 		if (found.length > 0 && rest.length > 0) {
 			let result: string[] = [];
-			for (let branch of found) {
-				result = [...result, ...travel(rest, branch)]
+			for (const branch of found) {
+				result = [...result, ...travel(rest, branch)];
 			}
+
 			return result;
-		} else {
-			return found;
 		}
+
+		return found;
 	}
 
-	return travel(selector.split(" "), text);
+	return travel(selector.split(' '), text);
 };

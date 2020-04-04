@@ -12,8 +12,8 @@ interface StaticState {
 
 type StaticProps = Styles & {
 	name?: string;
-	children: ReactNode
-}
+	children: ReactNode;
+};
 
 /**
  * `<Static>` component allows permanently rendering output to stdout and preserving it across renders. Components passed to `<Static>` as children will be written to stdout only once and will never be rerendered. `<Static>` output comes first, before any other output from your components, no matter where it is in the tree. In order for this mechanism to work properly, at most one `<Static>` component must be present in your node tree and components that were rendered must never update their output. Ink will detect new children appended to `<Static>` and render them to stdout.
@@ -53,9 +53,9 @@ export class Static extends Component<StaticProps, StaticState> {
 		return (
 			<div
 				// @ts-ignore
-				unstable__regionName={name}
-				// @ts-ignore
 				unstable__static
+				// @ts-ignore
+				unstable__regionName={name}
 				style={{
 					position: 'absolute',
 					flexDirection: 'column',

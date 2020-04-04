@@ -1,18 +1,18 @@
-import widestLine from "widest-line";
-import { wrapText } from "./wrap-text";
-import { getMaxWidth } from "./get-max-width";
-import { DOMNode, DOMElement } from "./dom";
+import widestLine from 'widest-line';
+import {wrapText} from './wrap-text';
+import {getMaxWidth} from './get-max-width';
+import {DOMNode, DOMElement} from './dom';
 
-export const openRegionTag = (name: string) => "\x1b_" + name + "\x1b[";
-export const closeRegionTag = (name: string) => "\x1b_" + `/${name}` + "\x1b[";
-export const wrapRegion = (name: string, text: string) => `${openRegionTag(name)}${text}${closeRegionTag(name)}`
+export const openRegionTag = (name: string) => '\u001B_' + name + '\u001B[';
+export const closeRegionTag = (name: string) => '\u001B_/' + name + '\u001B[';
+export const wrapRegion = (name: string, text: string) => `${openRegionTag(name)}${text}${closeRegionTag(name)}`;
 
 const isAllTextNodes = (node: DOMNode): boolean => {
-	if (node.nodeName === "#text") {
+	if (node.nodeName === '#text') {
 		return true;
 	}
 
-	if (node.nodeName === "SPAN") {
+	if (node.nodeName === 'SPAN') {
 		if (node.textContent) {
 			return true;
 		}
@@ -32,7 +32,7 @@ const isAllTextNodes = (node: DOMNode): boolean => {
 // Also, this is necessary for libraries like ink-link (https://github.com/sindresorhus/ink-link),
 // which need to wrap all children at once, instead of wrapping 3 text nodes separately.
 const squashTextNodes = (node: DOMElement) => {
-	let text = "";
+	let text = '';
 	if (node.childNodes.length > 0) {
 		// If parent container is `<Box>`, text nodes will be treated as separate nodes in
 		// the tree and will have their own coordinates in the layout.
@@ -40,20 +40,20 @@ const squashTextNodes = (node: DOMElement) => {
 		// and use them as offset for the rest of the nodes
 		// Only first node is taken into account, because other text nodes can't have margin or padding,
 		// so their coordinates will be relative to the first node anyway
-		const [{ yogaNode }] = node.childNodes;
+		const [{yogaNode}] = node.childNodes;
 		if (yogaNode) {
 			const offsetX = yogaNode.getComputedLeft();
 			const offsetY = yogaNode.getComputedTop();
 
-			text = "\n".repeat(offsetY) + " ".repeat(offsetX);
+			text = '\n'.repeat(offsetY) + ' '.repeat(offsetX);
 
 			for (const childNode of node.childNodes) {
-				let nodeText = "";
+				let nodeText = '';
 
-				if (childNode.nodeName === "#text") {
+				if (childNode.nodeName === '#text') {
 					nodeText = childNode.nodeValue;
 				} else {
-					if (childNode.nodeName === "SPAN") {
+					if (childNode.nodeName === 'SPAN') {
 						nodeText = childNode.textContent ?? squashTextNodes(childNode);
 					}
 
@@ -106,15 +106,15 @@ export const renderNodeToOutput = (
 		offsetY = 0,
 		transformers = [],
 		skipStaticElements,
-		openRegion = "",
-		closeRegion = ""
+		openRegion = '',
+		closeRegion = ''
 	} = options;
 
 	if (skipStaticElements && node.unstable__static) {
 		return;
 	}
 
-	const { yogaNode } = node;
+	const {yogaNode} = node;
 
 	if (yogaNode) {
 		// Left and top positions in Yoga are relative to their parent node
@@ -128,8 +128,8 @@ export const renderNodeToOutput = (
 		let newTransformers = transformers;
 
 		// Text nodes
-		if (node.nodeName === "#text") {
-			output.write(x, y, applyRegion(node.nodeValue), { transformers: newTransformers });
+		if (node.nodeName === '#text') {
+			output.write(x, y, applyRegion(node.nodeValue), {transformers: newTransformers});
 			return;
 		}
 
@@ -138,7 +138,7 @@ export const renderNodeToOutput = (
 		}
 
 		if (node.unstable__regionName) {
-			openRegion = openRegion + openRegionTag(node.unstable__regionName);
+			openRegion += openRegionTag(node.unstable__regionName);
 			closeRegion = closeRegionTag(node.unstable__regionName) + closeRegion;
 		}
 
@@ -150,9 +150,9 @@ export const renderNodeToOutput = (
 			// is where we should look for attributes
 			if (node.parentNode?.style.textWrap) {
 				const currentWidth = widestLine(text);
-				const maxWidth = node.parentNode.yogaNode
-					? getMaxWidth(node.parentNode.yogaNode)
-					: 0;
+				const maxWidth = node.parentNode.yogaNode ?
+					getMaxWidth(node.parentNode.yogaNode) :
+					0;
 
 				if (currentWidth > maxWidth) {
 					text = wrapText(text, maxWidth, {
@@ -161,11 +161,11 @@ export const renderNodeToOutput = (
 				}
 			}
 
-			output.write(x, y, applyRegion(text), { transformers: newTransformers });
+			output.write(x, y, applyRegion(text), {transformers: newTransformers});
 			return;
 		}
 
-		const isFlexDirectionRow = node.style.flexDirection === "row";
+		const isFlexDirectionRow = node.style.flexDirection === 'row';
 
 		if (isFlexDirectionRow && node.childNodes.every(isAllTextNodes)) {
 			let text = squashTextNodes(node);
@@ -181,7 +181,7 @@ export const renderNodeToOutput = (
 				}
 			}
 
-			output.write(x, y, applyRegion(text), { transformers: newTransformers });
+			output.write(x, y, applyRegion(text), {transformers: newTransformers});
 			return;
 		}
 
@@ -193,13 +193,13 @@ export const renderNodeToOutput = (
 				transformers: newTransformers,
 				skipStaticElements,
 				openRegion:
-					index === 0 && node.unstable__regionName
-						? openRegionTag(node.unstable__regionName)
-						: undefined,
+					index === 0 && node.unstable__regionName ?
+						openRegionTag(node.unstable__regionName) :
+						undefined,
 				closeRegion:
-					index === node.childNodes.length - 1 && node.unstable__regionName
-						? closeRegionTag(node.unstable__regionName)
-						: undefined
+					index === node.childNodes.length - 1 && node.unstable__regionName ?
+						closeRegionTag(node.unstable__regionName) :
+						undefined
 			});
 		}
 	}
