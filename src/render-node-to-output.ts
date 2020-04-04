@@ -5,6 +5,7 @@ import { DOMNode, DOMElement } from "./dom";
 
 export const openRegionTag = (name: string) => "\x1b_" + name + "\x1b[";
 export const closeRegionTag = (name: string) => "\x1b_" + `/${name}` + "\x1b[";
+export const wrapRegion = (name: string, text: string) => `${openRegionTag(name)}${text}${closeRegionTag(name)}`
 
 const isAllTextNodes = (node: DOMNode): boolean => {
 	if (node.nodeName === "#text") {
@@ -60,6 +61,10 @@ const squashTextNodes = (node: DOMElement) => {
 					// apply children transform, so we have to do it manually here for each text node
 					if (childNode.unstable__transformChildren) {
 						nodeText = childNode.unstable__transformChildren(nodeText);
+					}
+
+					if (childNode.unstable__regionName) {
+						nodeText = wrapRegion(childNode.unstable__regionName, nodeText);
 					}
 				}
 

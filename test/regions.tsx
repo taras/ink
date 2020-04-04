@@ -3,10 +3,10 @@ import test from "ava";
 import { renderToString } from "./helpers/render-to-string";
 import chalk from "chalk";
 import { Color, Box, Text } from "../src";
-import { findAll, findOne } from './helpers/regions';
+import { findByName } from "./helpers/regions";
 
 test("findAll matches multiple regions", t => {
-	const message = findAll(
+	const message = findByName(
 		"message",
 		"\x1b_message\x1b[Hello\x1b_/message\x1b[ \x1b_message\x1b[World\x1b_/message\x1b["
 	);
@@ -27,7 +27,7 @@ test("Retrieving multiple regions", t => {
 		</>
 	);
 
-	t.deepEqual(findAll("greeting", output), ["Hello", "World"]);
+	t.deepEqual(findByName("greeting", output), ["Hello", "World"]);
 });
 
 test("Box with multiple Color children", t => {
@@ -37,8 +37,25 @@ test("Box with multiple Color children", t => {
 		</Box>
 	);
 
-	t.is(
-		findOne("message", output),
-		`${chalk.red("Hello")} ${chalk.blue("World")}`
+	t.deepEqual(
+		findByName("message", output),
+		[`${chalk.red("Hello")} ${chalk.blue("World")}`]
 	);
+});
+
+test("Getting Boxes inside of a Box", t => {
+	const output = renderToString(
+		<Box name="shoebox">
+			<Box>
+				<Text name="postcard">Paris</Text>
+			</Box>
+			<Box name="pin">
+				<Text>Vote</Text>
+			</Box>
+		</Box>
+	);
+
+	console.log(output);
+
+	t.deepEqual(findByName("postcard", output), ["Paris"]);
 });
