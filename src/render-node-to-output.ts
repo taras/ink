@@ -138,8 +138,8 @@ export const renderNodeToOutput = (
 		}
 
 		if (node.unstable__regionName) {
-			openRegion = openRegionTag(node.unstable__regionName);
-			closeRegion = closeRegionTag(node.unstable__regionName);
+			openRegion = openRegion + openRegionTag(node.unstable__regionName);
+			closeRegion = closeRegionTag(node.unstable__regionName) + closeRegion;
 		}
 
 		// Nodes with only text inside

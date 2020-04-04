@@ -2,7 +2,7 @@ import React from "react";
 import test from "ava";
 import { renderToString } from "./helpers/render-to-string";
 import chalk from "chalk";
-import { Color, Box, Text } from "../src";
+import { Color, Box, Text, Static } from "../src";
 import { findByName } from "./helpers/regions";
 
 test("findAll matches multiple regions", t => {
@@ -37,10 +37,9 @@ test("Box with multiple Color children", t => {
 		</Box>
 	);
 
-	t.deepEqual(
-		findByName("message", output),
-		[`${chalk.red("Hello")} ${chalk.blue("World")}`]
-	);
+	t.deepEqual(findByName("message", output), [
+		`${chalk.red("Hello")} ${chalk.blue("World")}`
+	]);
 });
 
 test("Getting Boxes inside of a Box", t => {
@@ -73,4 +72,22 @@ test("Getting children of other parent regions", t => {
 
 	t.deepEqual(findByName("A text", output), ["First"]);
 	t.deepEqual(findByName("B text", output), ["Second"]);
+});
+
+test("Reading values from Static", t => {
+	const output = renderToString(
+		<Static name="static">
+			<Text name="line">
+				<Color red>Hello</Color>
+			</Text>
+			<Text name="line">
+				<Color blue>World</Color>
+			</Text>
+		</Static>
+	);
+
+	t.deepEqual(findByName("static line", output), [
+		chalk.red("Hello"),
+		chalk.blue("World")
+	]);
 });

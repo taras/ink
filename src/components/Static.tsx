@@ -10,6 +10,11 @@ interface StaticState {
 	lastIndex: number | null;
 }
 
+type StaticProps = Styles & {
+	name?: string;
+	children: ReactNode
+}
+
 /**
  * `<Static>` component allows permanently rendering output to stdout and preserving it across renders. Components passed to `<Static>` as children will be written to stdout only once and will never be rerendered. `<Static>` output comes first, before any other output from your components, no matter where it is in the tree. In order for this mechanism to work properly, at most one `<Static>` component must be present in your node tree and components that were rendered must never update their output. Ink will detect new children appended to `<Static>` and render them to stdout.
  *
@@ -26,9 +31,10 @@ interface StaticState {
  * When running tests, Jest keeps writing completed tests to output, while continuously
  * rendering test stats at the end of the output.
  */
-export class Static extends Component<Styles, StaticState> {
+export class Static extends Component<StaticProps, StaticState> {
 	static propTypes = {
-		children: PropTypes.node
+		children: PropTypes.node,
+		name: PropTypes.string
 	};
 
 	state: StaticState = {
@@ -36,7 +42,7 @@ export class Static extends Component<Styles, StaticState> {
 	};
 
 	render() {
-		const {children, ...otherProps} = this.props;
+		const {children, name, ...otherProps} = this.props;
 		const {lastIndex} = this.state;
 		let newChildren = children;
 
@@ -46,6 +52,8 @@ export class Static extends Component<Styles, StaticState> {
 
 		return (
 			<div
+				// @ts-ignore
+				unstable__regionName={name}
 				// @ts-ignore
 				unstable__static
 				style={{
