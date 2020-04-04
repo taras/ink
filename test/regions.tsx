@@ -45,7 +45,7 @@ test("Box with multiple Color children", t => {
 
 test("Getting Boxes inside of a Box", t => {
 	const output = renderToString(
-		<Box name="shoebox">
+		<Box name="shoebox" flexDirection="column">
 			<Box>
 				<Text name="postcard">Paris</Text>
 			</Box>
@@ -55,7 +55,22 @@ test("Getting Boxes inside of a Box", t => {
 		</Box>
 	);
 
-	console.log(output);
-
 	t.deepEqual(findByName("postcard", output), ["Paris"]);
+	t.deepEqual(findByName("pin", output), ["Vote"]);
+});
+
+test("Getting children of other parent regions", t => {
+	const output = renderToString(
+		<>
+			<Box name="A">
+				<Text name="text">First</Text>
+			</Box>
+			<Box name="B">
+				<Text name="text">Second</Text>
+			</Box>
+		</>
+	);
+
+	t.deepEqual(findByName("A text", output), ["First"]);
+	t.deepEqual(findByName("B text", output), ["Second"]);
 });
