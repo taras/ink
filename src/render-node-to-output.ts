@@ -3,8 +3,8 @@ import {wrapText} from './wrap-text';
 import {getMaxWidth} from './get-max-width';
 import {DOMNode, DOMElement} from './dom';
 
-export const openRegionTag = (name: string) => '\u001B_' + name + '\u001B[';
-export const closeRegionTag = (name: string) => '\u001B_/' + name + '\u001B[';
+export const openRegionTag = (name: string) => '\u001B_' + name + '\u001B\\';
+export const closeRegionTag = (name: string) => '\u001B_/' + name + '\u001B\\';
 export const wrapRegion = (name: string, text: string) => `${openRegionTag(name)}${text}${closeRegionTag(name)}`;
 
 const isAllTextNodes = (node: DOMNode): boolean => {
