@@ -8,7 +8,7 @@ import {findByName} from './helpers/regions';
 test('findAll matches multiple regions', t => {
 	const message = findByName(
 		'message',
-		'\u001B_message\u001b[Hello\u001b_/message\u001b[ \u001b_message\u001b[World\u001b_/message\u001b['
+		'\u001B_message\u001b\\Hello\u001b_/message\u001b\\ \u001b_message\u001b\\World\u001b_/message\u001b\\'
 	);
 
 	t.deepEqual(message, ['Hello', 'World']);
@@ -17,7 +17,7 @@ test('findAll matches multiple regions', t => {
 test('Text wraps in a region', t => {
 	const output = renderToString(<Text name="greeting">Hello World</Text>);
 
-	t.is(output, '\u001B_greeting\u001b[Hello World\u001b_/greeting\u001b[');
+	t.is(output, '\u001B_greeting\u001b\\Hello World\u001b_/greeting\u001b\\');
 });
 
 test('Retrieving multiple regions', t => {
