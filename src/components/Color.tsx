@@ -26,20 +26,19 @@ const methods = [
 /**
  * The `<Color>` compoment is a simple wrapper around the `chalk` API. It supports all of the `chalk`'s methods as `props`.
  */
-export const Color: FC<ColorProps & {children: ReactNode}> = ({
-	children,
-	...colorProps
-}) => {
+export const Color: FC<ColorProps> = ({children, ...colorProps}) => {
 	if (children === '') {
 		return null;
 	}
 
 	const transformChildren = (children: ReactNode) => {
 		// @ts-ignore
-		Object.keys(colorProps).forEach((method: keyof ColorProps) => {
+		Object.keys(colorProps).forEach((method: keyof ChalkProps) => {
 			if (colorProps[method]) {
 				if (methods.includes(method)) {
-					children = (chalk[method] as any)(...arrify(colorProps[method]))(children);
+					children = (chalk[method] as any)(...arrify(colorProps[method]))(
+						children
+					);
 				} else if (typeof chalk[method] === 'function') {
 					children = (chalk[method] as any)(children);
 				}
@@ -81,4 +80,6 @@ type ChalkFunctionProps = {
 
 type ChalkBooleanProps = Record<Colors, boolean>;
 
-type ColorProps = Partial<ChalkBooleanProps & ChalkFunctionProps>;
+type ChalkProps = Partial<ChalkBooleanProps & ChalkFunctionProps>;
+
+type ColorProps = ChalkProps & { children: ReactNode };
