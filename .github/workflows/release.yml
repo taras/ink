@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - master
+      - bigtest
 
 jobs:
   publish-releases:
