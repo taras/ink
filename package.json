@@ -1,5 +1,5 @@
 {
-	"name": "ink",
+	"name": "@bigtest/ink",
 	"version": "2.7.1",
 	"description": "React for CLI",
 	"license": "MIT",
