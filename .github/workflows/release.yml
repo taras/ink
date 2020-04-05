@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - bigtest
+      - master
 
 jobs:
   publish-releases:
