@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import {YogaNode} from 'yoga-layout-prebuilt';
 import {Styles} from '../styles';
 
-type BoxProps = {
+type BoxProps = Styles & {
 	name?: string;
 	unstable__transformChildren?: (children: ReactNode) => ReactNode;
-} & Styles;
+};
 
 /**
  * `<Box>` it's an essential Ink component to build your layout. It's like a `<div style="display: flex">` in a browser.
