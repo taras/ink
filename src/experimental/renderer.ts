@@ -4,6 +4,7 @@ import {calculateWrappedText} from '../calculate-wrapped-text';
 import {Output} from './output';
 import {setStyle} from './dom';
 import {DOMElement, TEXT_NAME} from '../dom';
+import {RendererCreator} from '../renderer';
 
 // Since <Static> components can be placed anywhere in the tree, this helper finds and returns them
 const findStaticNode = (node: DOMElement): DOMElement | undefined => {
@@ -24,7 +25,7 @@ const findStaticNode = (node: DOMElement): DOMElement | undefined => {
 	return undefined;
 };
 
-export const createRenderer = ({terminalWidth = 100}) => {
+export const createRenderer: RendererCreator = ({terminalWidth = 100, includeRegions}) => {
 	return (node: DOMElement) => {
 		setStyle(node, {
 			width: terminalWidth
@@ -40,7 +41,7 @@ export const createRenderer = ({terminalWidth = 100}) => {
 				height: node.yogaNode.getComputedHeight()
 			});
 
-			renderNodeToOutput(node, output, {skipStaticElements: true});
+			renderNodeToOutput(node, output, {skipStaticElements: true, includeRegions});
 
 			const staticNode = findStaticNode(node);
 			let staticOutput;
@@ -52,7 +53,8 @@ export const createRenderer = ({terminalWidth = 100}) => {
 				});
 
 				renderNodeToOutput(staticNode, staticOutput, {
-					skipStaticElements: false
+					skipStaticElements: false,
+					includeRegions
 				});
 			}
 

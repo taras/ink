@@ -35,14 +35,15 @@ export interface InkRendererOutput {
 
 export type InkRenderer = (node: DOMElement) => InkRendererOutput;
 
-type RendererCreator = (options: {
+export type RendererCreator = (options: {
 	terminalWidth: number;
+	includeRegions?: boolean;
 }) => (
 	node: DOMElement
 ) => { output: string; outputHeight: number; staticOutput: string };
 
 // Build layout, apply styles, build text output of all nodes and return it
-export const createRenderer: RendererCreator = ({terminalWidth}) => {
+export const createRenderer: RendererCreator = ({terminalWidth, includeRegions}) => {
 	const config = Yoga.Config.create();
 
 	// Used to free up memory used by last Yoga node tree
@@ -90,7 +91,7 @@ export const createRenderer: RendererCreator = ({terminalWidth}) => {
 					height: staticYogaNode.getComputedHeight()
 				});
 
-				renderNodeToOutput(rootNode, staticOutput, {skipStaticElements: false});
+				renderNodeToOutput(rootNode, staticOutput, {skipStaticElements: false, includeRegions});
 			}
 		}
 
@@ -113,7 +114,7 @@ export const createRenderer: RendererCreator = ({terminalWidth}) => {
 				height: yogaNode.getComputedHeight()
 			});
 
-			renderNodeToOutput(node, output, {skipStaticElements: true});
+			renderNodeToOutput(node, output, {skipStaticElements: true, includeRegions});
 
 			return {
 				output: output.get(),

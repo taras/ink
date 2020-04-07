@@ -2,8 +2,7 @@ import React from 'react';
 import test from 'ava';
 import {renderToString} from './helpers/render-to-string';
 import chalk from 'chalk';
-import {Color, Box, Text, Static} from '../src';
-import {findByName} from './helpers/regions';
+import {Color, Box, Text, Static, findByName} from '../src';
 
 test('findAll matches multiple regions', t => {
 	const message = findByName(
@@ -89,5 +88,18 @@ test('Reading values from Static', t => {
 	t.deepEqual(findByName('static line', output), [
 		chalk.red('Hello'),
 		chalk.blue('World')
+	]);
+});
+
+test('Render output without regions', t => {
+	const output = renderToString(
+		<Box name="message">
+			<Color red>Hello</Color> <Color blue>World</Color>
+		</Box>,
+		{includeRegions: false}
+	);
+
+	t.deepEqual(findByName('message', output), [
+		`${chalk.red('Hello')} ${chalk.blue('World')}`
 	]);
 });

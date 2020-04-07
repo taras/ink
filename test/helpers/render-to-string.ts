@@ -24,17 +24,33 @@ const createStream: (options: { columns: number }) => Stream = ({
 	};
 };
 
+interface RenderToStringOptions {
+	columns: number;
+	includeRegions: boolean;
+	experimental: boolean;
+}
+
 export const renderToString: (
 	node: JSX.Element,
-	options?: { columns: number }
-) => string = (node, options = {columns: 100}) => {
+	options?: Partial<RenderToStringOptions>
+) => string = (node, _options) => {
+	const options: RenderToStringOptions = {
+		..._options,
+		...{
+			columns: 100,
+			includeRegions: true,
+			experimental: process.env.EXPERIMENTAL === 'true'
+		}
+	};
+
 	const stream = createStream(options);
 
 	render(node, {
 		// @ts-ignore
 		stdout: stream,
 		debug: true,
-		experimental: process.env.EXPERIMENTAL === 'true'
+		experimental: options.experimental,
+		includeRegions: options.includeRegions
 	});
 
 	return stream.get();

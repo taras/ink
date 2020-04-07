@@ -21,6 +21,7 @@ export interface InkOptions {
 	debug: boolean;
 	exitOnCtrlC: boolean;
 	experimental: boolean;
+	includeRegions: boolean;
 	waitUntilExit?: () => Promise<void>;
 }
 
@@ -56,14 +57,16 @@ export class Ink {
 			this.rootNode.onImmediateRender = this.onRender;
 
 			this.renderer = createExperimentalRenderer({
-				terminalWidth: options.stdout.columns
+				terminalWidth: options.stdout.columns,
+				includeRegions: options.includeRegions
 			});
 		} else {
 			this.rootNode = dom.createNode('root');
 			this.rootNode.onRender = this.onRender;
 
 			this.renderer = createRenderer({
-				terminalWidth: options.stdout.columns
+				terminalWidth: options.stdout.columns,
+				includeRegions: options.includeRegions
 			});
 		}
 

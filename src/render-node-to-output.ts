@@ -3,9 +3,9 @@ import {wrapText} from './wrap-text';
 import {getMaxWidth} from './get-max-width';
 import {DOMNode, DOMElement} from './dom';
 
-export const openRegionTag = (name: string) => '\u001B_' + name + '\u001B\\';
-export const closeRegionTag = (name: string) => '\u001B_/' + name + '\u001B\\';
-export const wrapRegion = (name: string, text: string) => `${openRegionTag(name)}${text}${closeRegionTag(name)}`;
+const openRegionTag = (name: string) => '\u001B_' + name + '\u001B\\';
+const closeRegionTag = (name: string) => '\u001B_/' + name + '\u001B\\';
+const wrapRegion = (name: string, text: string) => `${openRegionTag(name)}${text}${closeRegionTag(name)}`;
 
 const isAllTextNodes = (node: DOMNode): boolean => {
 	if (node.nodeName === '#text') {
@@ -83,6 +83,7 @@ interface RenderNodeToOutputOptions {
 	skipStaticElements: boolean;
 	openRegion?: string;
 	closeRegion?: string;
+	includeRegions?: boolean;
 }
 
 export interface OutputWriteOptions {
@@ -107,7 +108,8 @@ export const renderNodeToOutput = (
 		transformers = [],
 		skipStaticElements,
 		openRegion = '',
-		closeRegion = ''
+		closeRegion = '',
+		includeRegions = false
 	} = options;
 
 	if (skipStaticElements && node.unstable__static) {
@@ -121,7 +123,7 @@ export const renderNodeToOutput = (
 		const x = offsetX + yogaNode.getComputedLeft();
 		const y = offsetY + yogaNode.getComputedTop();
 
-		const applyRegion = (text: string) => `${openRegion}${text}${closeRegion}`;
+		const applyRegion = (text: string) => includeRegions ? `${openRegion}${text}${closeRegion}` : text;
 
 		// Transformers are functions that transform final text output of each component
 		// See Output class for logic that applies transformers
@@ -137,7 +139,7 @@ export const renderNodeToOutput = (
 			newTransformers = [node.unstable__transformChildren, ...transformers];
 		}
 
-		if (node.unstable__regionName) {
+		if (includeRegions && node.unstable__regionName) {
 			openRegion += openRegionTag(node.unstable__regionName);
 			closeRegion = closeRegionTag(node.unstable__regionName) + closeRegion;
 		}
@@ -199,7 +201,8 @@ export const renderNodeToOutput = (
 				closeRegion:
 					index === node.childNodes.length - 1 && node.unstable__regionName ?
 						closeRegionTag(node.unstable__regionName) :
-						undefined
+						undefined,
+				includeRegions
 			});
 		}
 	}

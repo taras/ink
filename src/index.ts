@@ -11,3 +11,4 @@ export {useInput, Key} from './hooks/use-input';
 export {useApp} from './hooks/use-app';
 export {useStdin} from './hooks/use-stdin';
 export {useStdout} from './hooks/use-stdout';
+export {findByName} from './find-by-name';

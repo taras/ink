@@ -35,6 +35,10 @@ export interface RenderOptions {
 	 * @default false
 	 */
 	experimental?: boolean;
+	/**
+	 * Include hidden symbols used to identify areas on the screen in tests.
+	 */
+	includeRegions?: boolean;
 }
 
 export interface Instance {
@@ -68,6 +72,7 @@ export const render: RenderFunction = (node, options): Instance => {
 		debug: false,
 		exitOnCtrlC: true,
 		experimental: false,
+		includeRegions: false,
 		...optionsFrom(options)
 	};
 
